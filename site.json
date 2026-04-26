@@ -1,0 +1,394 @@
+{
+  "settings": {
+    "siteName": "Things",
+    "siteSubtitle": "pastane",
+    "theme": "kakao",
+    "accent": "berry",
+    "fontPair": "modern",
+    "openTime": "08:00",
+    "closeTime": "21:00",
+    "ovenTime": "06:00"
+  },
+  "hero": {
+    "badge": "Açıldı · Bugün 08:00 — 21:00",
+    "line1": "Sabah fırından",
+    "line2": "çıkmış",
+    "line2em": "tatlılar.",
+    "desc": "Küçük bir mahalle pastanesi. Her sabah taze tereyağı, gerçek vanilya ve mevsiminde meyveyle yapılmış kruvasanlar, tartlar ve pastalar.",
+    "btn1": "Menü",
+    "btn2": "Konumumuz",
+    "tape": "Tereyağı · Vanilya · Pastacı kreması · %70 Çikolata · Fındık tereyağı · Ahududu · Antep fıstığı",
+    "plates": [
+      {
+        "image": "",
+        "name": "Lucky",
+        "tag": ""
+      },
+      {
+        "image": "",
+        "name": "kani",
+        "tag": ""
+      },
+      {
+        "image": "",
+        "name": "kani",
+        "tag": ""
+      },
+      {
+        "image": "",
+        "name": "kani",
+        "tag": ""
+      }
+    ]
+  },
+  "vitrin": {
+    "eyebrow": "Vitrin",
+    "title": "Bugün vitrinde",
+    "titleEm": "ne var?",
+    "desc": "Her sabah elle yazılan, hava ve mevsimle değişen küçük bir liste. Üç tanesi burada — gerisi menüde.",
+    "featured": [
+      0,
+      3,
+      7
+    ]
+  },
+  "hikaye": {
+    "eyebrow": "Hikâyemiz",
+    "title": "Küçük bir",
+    "titleEm1": "mutfak,",
+    "titleRest": "uzun bir",
+    "titleEm2": "aşk hikâyesi.",
+    "desc": "Things, 2018'de Cihangir'de, bir kapı arası vitrinde başladı. Bugün hâlâ aynı tezgâh, aynı tartı, aynı tereyağı.",
+    "quote": "Bir kruvasan hızlı yapılamaz. Hamur sabretmeyi öğretir; biz de güne onu dinleyerek başlarız.",
+    "quoteBy": "Elif, baş pastacı",
+    "stats": [
+      {
+        "value": "2018",
+        "label": "Kapımızı açtık"
+      },
+      {
+        "value": "3",
+        "label": "İnsan, bir fırın"
+      },
+      {
+        "value": "06:00",
+        "label": "Hamur dinlenir"
+      },
+      {
+        "value": "100%",
+        "label": "Gerçek tereyağı"
+      }
+    ],
+    "photos": [
+      {
+        "label": "fotoğraf · fırın sabahı",
+        "image": ""
+      },
+      {
+        "label": "fotoğraf · vitrin",
+        "image": ""
+      },
+      {
+        "label": "fotoğraf · elifin elleri",
+        "image": ""
+      }
+    ]
+  },
+  "felsefe": {
+    "eyebrow": "Felsefemiz",
+    "title": "Sabır,",
+    "titleRest": "tereyağı ve mevsiminde meyve.",
+    "desc": "Acele etmiyoruz. Hamurumuz 18 saat dinlenir, kremamız gerçek vanilyayla yapılır, meyvelerimiz her hafta pazardan gelir. Basit malzeme, büyük sabır."
+  },
+  "sezon": {
+    "eyebrow": "Mevsim",
+    "title": "Bu hafta",
+    "titleEm": "çilek.",
+    "desc": "Pazardan gelen Manisa çileğiyle yaptığımız üç sınırlı tatlı. Cumartesi akşamı bitiyor.",
+    "items": [
+      {
+        "num": "I",
+        "name": "Çilekli ",
+        "desc": "Klasik tarif, kalın krema, yumuşak hamur. Bütün için 24 saat önceden.",
+        "price": "₺ 95",
+        "color1": "#f7c1c8",
+        "color2": "#b54a59",
+        "image": ""
+      },
+      {
+        "num": "II",
+        "name": "Çilekli Pasta",
+        "desc": "İki kat ıslak pandispanya, vanilyalı krema, çilek kalbi. Doğum gününüz buradan kutlansın.",
+        "price": "₺ 480 / 6 kişilik",
+        "color1": "#f9d2cb",
+        "color2": "#c44a55",
+        "image": ""
+      },
+      {
+        "num": "III",
+        "name": "Çilekli Makaron",
+        "desc": "Hafif çıtır kabuk, taze çilek ganajı. 6'lı bir kutu, sevdiklerinize.",
+        "price": "₺ 35 / adet",
+        "color1": "#f7c8c0",
+        "color2": "#c64f5a",
+        "image": ""
+      }
+    ]
+  },
+  "birgun": {
+    "eyebrow": "Bir Gün",
+    "title": "Things'te",
+    "titleEm": "bir gün",
+    "titleRest": "böyle geçer.",
+    "cards": [
+      {
+        "time": "06:00",
+        "caption": "İlk fırın yanar. Hamur dinlenmeye bırakılır.",
+        "color1": "#efe2c4",
+        "color2": "#a47a3a",
+        "image": ""
+      },
+      {
+        "time": "07:30",
+        "caption": "Kruvasanlar vitrine, ilk müşteri yolda.",
+        "color1": "#f4d4b0",
+        "color2": "#a85a2a",
+        "image": ""
+      },
+      {
+        "time": "10:15",
+        "caption": "İkinci kahve. Mahallenin sabah dedikodusu.",
+        "color1": "#e6d8b0",
+        "color2": "#806535",
+        "image": ""
+      },
+      {
+        "time": "15:00",
+        "caption": "Tereyağlı kurabiye fırından çıkar — çay saati ilan edilir.",
+        "color1": "#f1c8c0",
+        "color2": "#9c4a4a",
+        "image": ""
+      },
+      {
+        "time": "18:40",
+        "caption": "İpli kutular, tatlı bir veda hediyesi.",
+        "color1": "#e0c89c",
+        "color2": "#5a3a18",
+        "image": ""
+      },
+      {
+        "time": "21:00",
+        "caption": "Son müşteri, son kahve. Yarına kadar.",
+        "color1": "#cfb88c",
+        "color2": "#3e2914",
+        "image": ""
+      }
+    ]
+  },
+  "contact": {
+    "address": "Akarsu Cd. 1, Cihangir",
+    "city": "İstanbul",
+    "phone": "+90 212 000 00 00",
+    "whatsapp": "+90 532 000 00 00",
+    "email": "merhaba@things.ist",
+    "hours": [
+      {
+        "days": "Pzt — Cum",
+        "time": "08:00 — 21:00"
+      },
+      {
+        "days": "Cmt",
+        "time": "09:00 — 22:00"
+      },
+      {
+        "days": "Pzr",
+        "time": "09:00 — 19:00"
+      }
+    ]
+  },
+  "categories": [
+    {
+      "id": "viennoiserie",
+      "name": "Hamur İşleri"
+    },
+    {
+      "id": "tarts",
+      "name": "Tartlar"
+    },
+    {
+      "id": "cakes",
+      "name": "Pastalar"
+    },
+    {
+      "id": "boissons",
+      "name": "İçecekler"
+    },
+    {
+      "id": "petits",
+      "name": "Küçük Tatlılar"
+    }
+  ],
+  "menu": [
+    {
+      "id": 1,
+      "cat": "viennoiserie",
+      "group": "Hamur İşleri",
+      "groupSub": "Sabahın hamur işleri",
+      "name": "Tereyağlı Kruvasan",
+      "desc": "81 kat hamur, Normandiya tereyağı, 18 saatlik soğuk dinlenme. Kabuğu çıtır, içi hava gibi.",
+      "price": "₺ 45",
+      "image": "",
+      "gradient": "radial-gradient(circle at 35% 30%, #fbf6ea, #ead7b4)"
+    },
+    {
+      "id": 2,
+      "cat": "viennoiserie",
+      "group": "Hamur İşleri",
+      "name": "Çikolatalı Kruvasan",
+      "desc": "Aynı tereyağlı hamur, içinde iki çubuk %70 bitter çikolata. Sabah kahvesinin en iyi arkadaşı.",
+      "price": "₺ 55",
+      "image": "",
+      "gradient": "radial-gradient(circle at 35% 30%, #f4e0bd, #8a5a2c)"
+    },
+    {
+      "id": 3,
+      "cat": "viennoiserie",
+      "group": "Hamur İşleri",
+      "name": "Karamelli Tereyağlı Hamur",
+      "desc": "Tereyağı ve şekerin karamelize olduğu Breton özlemi. Dişe çıtır, ağıza tatlı bir veda.",
+      "price": "₺ 60",
+      "image": "",
+      "gradient": "radial-gradient(circle at 35% 30%, #efd6a4, #b07a35)"
+    },
+    {
+      "id": 4,
+      "cat": "tarts",
+      "group": "Tartlar",
+      "groupSub": "Bisküvi tabanı, mevsim üstü",
+      "name": "Çilekli Tart",
+      "desc": "Vanilyalı pastacı kreması, taze Manisa çileği, kuru badem tabanı. Sezonun yıldızı.",
+      "price": "₺ 95",
+      "image": "",
+      "gradient": "radial-gradient(circle at 50% 50%, #f7c8c0, #b54a59)"
+    },
+    {
+      "id": 5,
+      "cat": "tarts",
+      "group": "Tartlar",
+      "name": "Limonlu Tart",
+      "desc": "Amalfi limonu, yumuşak beze üst, kıtır kabuk. Ekşinin zerafetle dengelenmiş hâli.",
+      "price": "₺ 85",
+      "image": "",
+      "gradient": "radial-gradient(circle at 50% 50%, #f7eaa0, #c89a35)"
+    },
+    {
+      "id": 6,
+      "cat": "tarts",
+      "group": "Tartlar",
+      "name": "Çikolatalı Fındıklı Tart",
+      "desc": "Yoğun bitter ganaj, fındık tabanı, tuzlu karamel iplikleri. Akşamüstü kahvesi için.",
+      "price": "₺ 90",
+      "image": "",
+      "gradient": "radial-gradient(circle at 50% 50%, #d8a070, #4a2810)"
+    },
+    {
+      "id": 7,
+      "cat": "cakes",
+      "group": "Pastalar",
+      "groupSub": "Doğum günleri, küçük kutlamalar",
+      "name": "Vanilyalı Milföy",
+      "desc": "Üç kat puf hamuru, Madagaskar vanilyalı krema, klasik buzlu üst. Sabırla katlanır.",
+      "price": "₺ 110",
+      "image": "",
+      "gradient": "radial-gradient(circle at 50% 50%, #f5e3c8, #c89a66)"
+    },
+    {
+      "id": 8,
+      "cat": "cakes",
+      "group": "Pastalar",
+      "name": "Çilekli Pasta",
+      "desc": "İki kat ıslak pandispanya, vanilyalı krema, çilek kalbi. 6 kişilik, 24 saat öncesinden.",
+      "price": "₺ 480 / 6 kişilik",
+      "image": "",
+      "gradient": "radial-gradient(circle at 50% 50%, #f9d2cb, #c44a55)"
+    },
+    {
+      "id": 9,
+      "cat": "cakes",
+      "group": "Pastalar",
+      "name": "Opera Pastası",
+      "desc": "İnce bisküvi, kahve şurubu, kahve ganajı, çikolata buzu. Klasik bir melodi.",
+      "price": "₺ 130",
+      "image": "",
+      "gradient": "radial-gradient(circle at 50% 50%, #c89a6a, #2a1a0c)"
+    },
+    {
+      "id": 10,
+      "cat": "petits",
+      "group": "Küçük Tatlılar",
+      "groupSub": "Bir nefeslik tatlılar",
+      "name": "Ahududulu Makaron",
+      "desc": "Çıtır kabuk, ahududu ganajı. 6'lı kutu da yapıyoruz, sevdiklerinize.",
+      "price": "₺ 35 / adet",
+      "image": "",
+      "gradient": "radial-gradient(circle at 50% 50%, #f7c1c8, #b54a59)"
+    },
+    {
+      "id": 11,
+      "cat": "petits",
+      "group": "Küçük Tatlılar",
+      "name": "Karamelli Kek",
+      "desc": "Karamelize kabuk, içi yumuşacık. Rom ve vanilyayla kokulanır, soğuduğu gibi yenir.",
+      "price": "₺ 30",
+      "image": "",
+      "gradient": "radial-gradient(circle at 50% 50%, #d8a070, #4a2810)"
+    },
+    {
+      "id": 12,
+      "cat": "petits",
+      "group": "Küçük Tatlılar",
+      "name": "Tereyağlı Kurabiye, Çikolata",
+      "desc": "Tuzlu tereyağı kurabiyesi, üzerinde sıcak bitter çikolata damlası. Çay saatinin tarifi.",
+      "price": "₺ 30",
+      "image": "",
+      "gradient": "radial-gradient(circle at 50% 50%, #e8c8a0, #7a4a22)"
+    },
+    {
+      "id": 13,
+      "cat": "boissons",
+      "group": "İçecekler",
+      "groupSub": "İçecek menüsü",
+      "name": "Sütlü Kahve",
+      "desc": "Tek shot espresso, sıcak süt köpüğü, küçük bir kupada. Bir kruvasanla buluşması bedavadır.",
+      "price": "₺ 45",
+      "image": "",
+      "gradient": "radial-gradient(circle at 35% 30%, #f4ebd9, #5a3318)"
+    },
+    {
+      "id": 14,
+      "cat": "boissons",
+      "group": "İçecekler",
+      "name": "Sıcak Çikolata",
+      "desc": "Erimiş %70 bitter çikolata, az süt, biraz tarçın. Kış aylarında üç kişilik servis ediyoruz.",
+      "price": "₺ 60",
+      "image": "",
+      "gradient": "radial-gradient(circle at 35% 30%, #c89a6a, #2a1a0c)"
+    },
+    {
+      "id": 15,
+      "cat": "boissons",
+      "group": "İçecekler",
+      "name": "Soğuk Bergamot Çayı",
+      "desc": "Bergamotlu siyah çay, buz, biraz limon. Yaz öğleden sonraları için.",
+      "price": "₺ 40",
+      "image": "",
+      "gradient": "radial-gradient(circle at 35% 30%, #e8d4a8, #6a4a22)"
+    }
+  ],
+  "social": [
+    {
+      "url": "https://www.instagram.com/thingsankara",
+      "label": "Instagram"
+    }
+  ]
+}

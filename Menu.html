@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="Things Pastane menü — kruvasanlar, tartlar, pastalar, küçük tatlılar ve içecekler. Taze, el yapımı, mevsiminde." />
+<title>Things Pastane — Menü</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Inter:wght@300;400;500;600&family=Abril+Fatface&family=Poiret+One&family=Josefin+Sans:wght@300;400;600&family=Poppins:wght@300;400;500;600&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#f6efe1;
+    --bg-2:#ede1c6;
+    --paper:#fbf6ea;
+    --fg:#2a1a0c;
+    --fg-2:#5a4129;
+    --fg-3:#8a7458;
+    --line:rgba(42,26,12,.18);
+    --line-2:rgba(42,26,12,.3);
+    --accent:#a85a2a;
+    --accent-ink:#5a3318;
+    --serif:"Fraunces", "Times New Roman", serif;
+    --sans:"DM Sans", system-ui, sans-serif;
+    --mono:"DM Mono", ui-monospace, Menlo, monospace;
+  }
+  html[data-theme="kakao"]{--bg:#1f1409;--bg-2:#2c1c10;--paper:#28190d;--fg:#f7ecd7;--fg-2:#e3cba2;--fg-3:#a08866;--line:rgba(247,236,215,.12);--line-2:rgba(247,236,215,.22)}
+  html[data-theme="vanilya"]{--bg:#fdf8ee;--bg-2:#f5edd8;--paper:#fffcf4;--fg:#3a2a14;--fg-2:#6a5438;--fg-3:#9a8868;--line:rgba(58,42,20,.12);--line-2:rgba(58,42,20,.20)}
+  html[data-theme="espresso"]{--bg:#16100a;--bg-2:#221810;--paper:#1c140e;--fg:#f0e4d0;--fg-2:#d4bc96;--fg-3:#9a7e58;--line:rgba(240,228,208,.10);--line-2:rgba(240,228,208,.18)}
+  html[data-theme="fildisi"]{--bg:#f4efe6;--bg-2:#e8dfd0;--paper:#faf6ef;--fg:#2e2418;--fg-2:#5e4e38;--fg-3:#8e7e68;--line:rgba(46,36,24,.12);--line-2:rgba(46,36,24,.20)}
+  html[data-theme="gece"]{--bg:#0e1420;--bg-2:#161e2e;--paper:#121a28;--fg:#e0e6f0;--fg-2:#a0aec0;--fg-3:#6a7a90;--line:rgba(224,230,240,.10);--line-2:rgba(224,230,240,.18)}
+  html[data-theme="tarçın"]{--bg:#1e120c;--bg-2:#2c1a12;--paper:#241610;--fg:#f2e0cc;--fg-2:#d4b898;--fg-3:#a0825e;--line:rgba(242,224,204,.10);--line-2:rgba(242,224,204,.18)}
+  html[data-theme="zeytin"]{--bg:#f0eee4;--bg-2:#e2dece;--paper:#f6f4ec;--fg:#2a2e1e;--fg-2:#4e5438;--fg-3:#7e8468;--line:rgba(42,46,30,.12);--line-2:rgba(42,46,30,.20)}
+  html[data-theme="lavanta"]{--bg:#f4f0f6;--bg-2:#e6dded;--paper:#f8f5fa;--fg:#2a2030;--fg-2:#544060;--fg-3:#847090;--line:rgba(42,32,48,.12);--line-2:rgba(42,32,48,.20)}
+  html[data-theme="mermer"]{--bg:#f8f8f6;--bg-2:#eeedea;--paper:#fdfdfb;--fg:#1a1a18;--fg-2:#4a4a48;--fg-3:#8a8a88;--line:rgba(26,26,24,.10);--line-2:rgba(26,26,24,.18)}
+  html[data-pair="modern"]{--serif:"DM Sans","Helvetica Neue",system-ui,sans-serif}
+  html[data-pair="klasik"]{--serif:"Cormorant Garamond","Georgia","Times New Roman",serif}
+  html[data-pair="zarif"]{--serif:"Playfair Display","Cormorant Garamond",Georgia,serif;--sans:"Lato","Helvetica Neue",system-ui,sans-serif}
+  html[data-pair="minimal"]{--serif:"Inter","DM Sans",system-ui,sans-serif;--sans:"Inter","DM Sans",system-ui,sans-serif}
+  html[data-pair="retro"]{--serif:"Abril Fatface","Playfair Display",Georgia,serif}
+  html[data-pair="el-yazısı"]{--serif:"Caveat","Kalam","Bradley Hand",cursive}
+  html[data-pair="art-deco"]{--serif:"Poiret One","Cormorant Garamond",serif;--sans:"Josefin Sans","DM Sans",system-ui,sans-serif}
+  html[data-pair="geometric"]{--serif:"Poppins","DM Sans",system-ui,sans-serif;--sans:"Poppins","DM Sans",system-ui,sans-serif}
+  html[data-pair="rustik"]{--serif:"Merriweather","Georgia",serif;--sans:"Source Sans 3","DM Sans",system-ui,sans-serif}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5}
+  html{scroll-behavior:smooth}
+  a{color:inherit;text-decoration:none}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+  .skip-link{position:absolute;top:-100%;left:16px;z-index:9999;background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;font-weight:600;transition:top .2s}
+  .skip-link:focus{top:12px}
+  ::selection{background:var(--accent);color:#fff8e8}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+  @media (max-width:640px){.wrap{padding:0 22px}}
+
+  /* Nav */
+  .nav{position:sticky;top:0;z-index:50;background:color-mix(in oklab,var(--bg) 88%,transparent);
+    backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);
+    border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .brand{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:22px}
+  .brand em{font-style:italic;font-size:18px;color:var(--accent-ink)}
+  .brand-mark{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff8e8;
+    display:grid;place-items:center;font-family:var(--serif);font-style:italic;font-size:20px}
+  .nav-links{display:flex;gap:30px;font-size:14px;color:var(--fg-2)}
+  .nav-links a{padding:6px 0;position:relative}
+  .nav-links a.on{color:var(--fg)}
+  .nav-links a.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--accent)}
+  .nav-links a:hover{color:var(--fg)}
+  .btn{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 16px;border-radius:999px;
+    font-size:13px;font-weight:500;border:1px solid var(--line-2);background:transparent;color:var(--fg);
+    transition:background .2s, color .2s, border-color .2s}
+  .btn:hover{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+  .btn .arrow{transition:transform .3s}
+  .btn:hover .arrow{transform:translateX(3px)}
+  @media (max-width:760px){.nav-links{display:none}.btn.desktop{display:none}}
+
+  /* Hamburger */
+  .hamburger{display:none;background:none;border:none;width:40px;height:40px;padding:0;
+    flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer}
+  .hamburger span{display:block;width:22px;height:2px;background:var(--fg);border-radius:2px;
+    transition:transform .3s,opacity .3s}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  @media (max-width:760px){.hamburger{display:flex}}
+  .mobile-menu{position:fixed;inset:0;z-index:45;background:var(--bg);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+    opacity:0;pointer-events:none;transition:opacity .35s;padding:80px 32px}
+  .mobile-menu.open{opacity:1;pointer-events:auto}
+  .mobile-menu a{font-family:var(--serif);font-size:32px;font-weight:400;color:var(--fg)}
+
+  /* Header */
+  .head{padding:120px 0 70px;text-align:center;position:relative}
+  .head .eyebrow{font-family:var(--mono);font-size:13px;color:var(--fg-3);letter-spacing:.04em}
+  .head h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,8vw,120px);line-height:.95;
+    letter-spacing:-0.02em;margin:14px 0 0}
+  .head h1 em{font-style:italic;color:var(--accent-ink)}
+  .head .sub{margin:24px auto 0;max-width:54ch;color:var(--fg-2);font-size:17px;line-height:1.55;text-wrap:pretty}
+  .head .meta{margin-top:30px;display:inline-flex;gap:18px;align-items:center;font-family:var(--mono);font-size:12px;color:var(--fg-3);letter-spacing:.04em;flex-wrap:wrap;justify-content:center}
+  .head .meta .vr{width:4px;height:4px;border-radius:50%;background:var(--fg-3)}
+
+  /* Category nav */
+  .catnav{position:sticky;top:72px;z-index:40;background:color-mix(in oklab,var(--bg) 90%,transparent);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .catnav-inner{display:flex;gap:8px;justify-content:center;padding:14px 0;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap}
+  .catnav-inner::-webkit-scrollbar{display:none}
+  .catbtn{flex-shrink:0;padding:8px 16px;border-radius:999px;font-size:13px;font-family:var(--mono);
+    color:var(--fg-2);border:1px solid var(--line);background:var(--paper);
+    transition:background .2s, color .2s, border-color .2s;cursor:pointer}
+  .catbtn:hover{border-color:var(--line-2)}
+  .catbtn.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+
+  /* Menu list */
+  .menu{padding:80px 0 40px}
+  .group-head{padding:60px 0 30px;text-align:center}
+  .group-head .lab{font-family:var(--mono);font-size:12px;color:var(--fg-3);letter-spacing:.12em;text-transform:uppercase}
+  .group-head h2{font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(36px,5vw,64px);
+    line-height:1;margin:10px 0 0;color:var(--accent-ink)}
+  .group-head .sep{display:block;margin:24px auto 0;width:60px;height:1px;background:var(--line-2)}
+
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding:50px 0;
+    border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .row.flip{direction:rtl}
+  .row.flip > *{direction:ltr}
+  @media (max-width:760px){
+    .row{grid-template-columns:1fr;gap:24px;padding:40px 0}
+    .row.flip{direction:ltr}
+  }
+
+  .row .img{aspect-ratio:5/4;border-radius:14px;overflow:hidden;position:relative;background:var(--bg-2);
+    transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .row:hover .img{transform:translateY(-4px)}
+  .row .img::after{content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(135deg, rgba(42,26,12,.05) 0 8px, transparent 8px 16px);pointer-events:none}
+  .row .img .lbl{position:absolute;left:14px;bottom:12px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--fg-2);
+    background:var(--paper);padding:5px 10px;border-radius:6px;border:1px solid var(--line);z-index:2}
+
+  .row .info{display:flex;flex-direction:column;gap:12px}
+  .row .num{font-family:var(--mono);font-size:14px;color:var(--accent-ink);letter-spacing:.06em;font-weight:500}
+  .row h3{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,42px);line-height:1.05;margin:0;letter-spacing:-0.01em}
+  .row p{margin:0;color:var(--fg-2);font-size:15px;line-height:1.6;max-width:42ch}
+  .row .price{margin-top:6px;font-family:var(--serif);font-style:italic;font-size:24px;color:var(--fg)}
+
+  /* Footer note */
+  .foot-note{padding:80px 0 100px;text-align:center;color:var(--fg-3);font-family:var(--serif);font-style:italic;font-size:18px}
+  .foot-note em{font-family:var(--mono);font-size:12px;color:var(--accent-ink);font-style:normal;letter-spacing:.06em;display:block;margin-bottom:8px}
+
+  /* Footer */
+  footer{background:var(--fg);color:var(--bg);padding:60px 0 30px;text-align:center}
+  footer h3{font-family:var(--serif);font-weight:400;font-size:32px;margin:0}
+  footer h3 em{font-style:italic;color:var(--accent)}
+  footer p{margin:14px 0 0;color:color-mix(in oklab,var(--bg) 60%,transparent);font-size:14px}
+  footer .cred{margin-top:32px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:color-mix(in oklab,var(--bg) 45%,transparent)}
+  .ft-socials{display:flex;gap:10px;margin-top:18px;justify-content:center;flex-wrap:wrap}
+  .ft-social-link{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;
+    background:color-mix(in oklab,var(--bg) 15%,transparent);border:1px solid color-mix(in oklab,var(--bg) 20%,transparent);
+    transition:background .2s,transform .2s}
+  .ft-social-link:hover{background:color-mix(in oklab,var(--bg) 25%,transparent);transform:translateY(-2px)}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  /* Page transition */
+  .page-transition{position:fixed;inset:0;z-index:9999;background:var(--bg);
+    opacity:1;pointer-events:none;transition:opacity .5s cubic-bezier(.2,.8,.2,1)}
+  .page-transition.done{opacity:0}
+
+  /* Scroll progress */
+  .scroll-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:9999;
+    background:var(--accent);transform-origin:left;transform:scaleX(0);will-change:transform}
+
+  /* Image zoom on hover */
+  .row .img{overflow:hidden}
+  .row .img > *{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+  .row:hover .img > *{transform:scale(1.06)}
+
+  /* Staggered row reveal */
+  .row.reveal:nth-child(2){transition-delay:.08s}
+  .row.reveal:nth-child(3){transition-delay:.14s}
+  .row.reveal:nth-child(4){transition-delay:.2s}
+
+  /* Mobile */
+  @media (max-width:640px){
+    .head{padding:90px 0 50px}
+    .head h1{font-size:clamp(40px,10vw,64px)}
+    .head .sub{font-size:15px}
+    .head .meta{gap:12px;font-size:11px}
+    .catnav-inner{justify-content:flex-start;flex-wrap:nowrap;padding:10px 0}
+    .catbtn{padding:6px 12px;font-size:12px}
+    .menu{padding:50px 0 30px}
+    .group-head{padding:40px 0 20px}
+    .group-head h2{font-size:clamp(28px,6vw,48px)}
+    .row{padding:30px 0}
+    .row .info{gap:8px}
+    .row h3{font-size:clamp(24px,5vw,32px)}
+    .row p{font-size:14px}
+    .foot-note{padding:50px 0 60px;font-size:16px}
+  }
+</style>
+</head>
+<body>
+<a href="#list" class="skip-link">Menüye atla</a>
+
+<nav class="nav" aria-label="Ana navigasyon">
+  <div class="wrap nav-inner">
+    <a href="Things.html" class="brand" aria-label="Things pastane ana sayfa">
+      <span class="brand-mark" aria-hidden="true">T</span>
+      <span>Things <em>pastane</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="Menu.html" class="on">Menü</a>
+      <a href="Things.html#hikaye">Hikâyemiz</a>
+      <a href="Things.html#sezon">Mevsim</a>
+      <a href="Things.html#ziyaret">Ziyaret</a>
+    </div>
+    <a class="btn desktop" href="Things.html#ziyaret">Sipariş ver <span class="arrow">→</span></a>
+    <button class="hamburger" id="hamburger" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="Things.html">Ana Sayfa</a>
+  <a href="Things.html#hikaye">Hikâyemiz</a>
+  <a href="Menu.html">Menü</a>
+  <a href="Things.html#sezon">Mevsim</a>
+  <a href="Things.html#ziyaret">Ziyaret</a>
+</div>
+
+<header class="head">
+  <div class="wrap">
+    <div class="eyebrow">— Menü · Mayıs 2026 —</div>
+    <h1>Bugünün <em>vitrini.</em></h1>
+    <p class="sub">Her sabah elle yazılır, mevsimle değişir. Stok bittiğinde güne veda ederiz — bu yüzden erken gelene öpücük.</p>
+    <div class="meta">
+      <span>Fırın · 06:00</span>
+      <span class="vr"></span>
+      <span>Vitrin açık · 08:00</span>
+      <span class="vr"></span>
+      <span>Son sipariş · 20:30</span>
+    </div>
+  </div>
+</header>
+
+<div class="catnav">
+  <div class="wrap catnav-inner" id="catnav">
+    <button class="catbtn on" data-cat="all">Hepsi</button>
+    <button class="catbtn" data-cat="viennoiserie">Hamur İşleri</button>
+    <button class="catbtn" data-cat="tarts">Tartlar</button>
+    <button class="catbtn" data-cat="cakes">Pastalar</button>
+    <button class="catbtn" data-cat="petits">Küçük Tatlılar</button>
+    <button class="catbtn" data-cat="boissons">İçecekler</button>
+  </div>
+</div>
+
+<main class="menu">
+  <div class="wrap" id="list"></div>
+</main>
+
+<div class="foot-note">
+  <em>p.s.</em>
+  Bütün pastalar 24 saat öncesinden ön sipariş ile hazırlanır.<br/>
+  Glütensiz alternatifler için lütfen sorunuz.
+</div>
+
+<footer>
+  <div class="wrap">
+    <h3 id="ft_name">Things <em>pastane</em></h3>
+    <p id="ft_addr">Akarsu Cd. 1, Cihangir · İstanbul</p>
+    <div id="ft_socials" class="ft-socials"></div>
+    <div class="cred">© 2026 · Tereyağı, vanilya ve sabırla yapılır. · Designed by <a href="#" style="color:var(--accent)">Lucky Studio</a></div>
+  </div>
+</footer>
+
+<script>
+  // Admin panelden anlık güncelleme
+  const _bc = new BroadcastChannel("things_admin");
+  _bc.onmessage = () => location.reload();
+
+  let ITEMS = [];
+  const list = document.getElementById("list");
+  const catnav = document.getElementById("catnav");
+
+  // API'den veri çek
+  async function loadFromAPI() {
+    try {
+      const r = await fetch("/api/data");
+      const data = await r.json();
+      // Tema ayarlarını uygula
+      if (data.settings) {
+        const st = data.settings;
+        if (st.theme) document.documentElement.dataset.theme = st.theme;
+        if (st.fontPair) document.documentElement.dataset.pair = st.fontPair;
+        if (st.accent) {
+          const darkThemes = ["kakao","espresso","gece","tarçın"];
+          const isDark = darkThemes.includes(st.theme);
+          const accents = {
+            caramel:{light:{a:"#a85a2a",ink:"#5a3318"},dark:{a:"#e0a070",ink:"#f4d4ad"}},
+            framboise:{light:{a:"#b54a59",ink:"#6a2530"},dark:{a:"#e8828e",ink:"#f4b8be"}},
+            pistache:{light:{a:"#7a8a4a",ink:"#3f4a22"},dark:{a:"#a8b870",ink:"#d0dca0"}},
+            gold:{light:{a:"#c8a96a",ink:"#7a5d23"},dark:{a:"#e0c888",ink:"#f4e0b0"}},
+            rose:{light:{a:"#b56a7a",ink:"#7a3848"},dark:{a:"#d8909e",ink:"#f0c0c8"}},
+            chocolate:{light:{a:"#6a3e20",ink:"#3a200e"},dark:{a:"#c09060",ink:"#e0c0a0"}},
+            berry:{light:{a:"#7a3a6a",ink:"#4a1840"},dark:{a:"#b870a8",ink:"#d8a8d0"}},
+            honey:{light:{a:"#c89a30",ink:"#7a5e10"},dark:{a:"#e0b850",ink:"#f0d888"}},
+            sage:{light:{a:"#6a8060",ink:"#3a4a30"},dark:{a:"#98b088",ink:"#c0d0b0"}},
+            copper:{light:{a:"#b06a3a",ink:"#6a3a18"},dark:{a:"#d89060",ink:"#f0b898"}},
+            plum:{light:{a:"#6a3050",ink:"#3e1830"},dark:{a:"#a86888",ink:"#d0a0b8"}},
+            cinnamon:{light:{a:"#8a4a2a",ink:"#5a2e16"},dark:{a:"#c88050",ink:"#e0b090"}},
+          };
+          const ac = accents[st.accent] || accents.caramel;
+          const a = isDark ? ac.dark : ac.light;
+          document.documentElement.style.setProperty("--accent", a.a);
+          document.documentElement.style.setProperty("--accent-ink", a.ink);
+        }
+      }
+      // Footer sosyal medya ikonları
+      const socials = (data.social || []).filter(s => s.url);
+      const ftSocials = document.getElementById("ft_socials");
+      if (ftSocials && socials.length > 0) {
+        ftSocials.innerHTML = socials.map(s => {
+          try {
+            const host = new URL(s.url).hostname;
+            return `<a href="${s.url}" target="_blank" rel="noopener noreferrer" class="ft-social-link" title="${s.label||""}" aria-label="${s.label || host}">
+              <img src="https://www.google.com/s2/favicons?domain=${host}&sz=64" alt="${s.label || host}" width="20" height="20" style="border-radius:4px;opacity:.85" onerror="this.style.display='none'"/>
+            </a>`;
+          } catch { return ""; }
+        }).join("");
+      }
+      // Footer bilgileri güncelle
+      const st = data.settings || {};
+      const ct = data.contact || {};
+      const ftName = document.getElementById("ft_name");
+      const ftAddr = document.getElementById("ft_addr");
+      if (ftName) ftName.innerHTML = `${st.siteName||"Things"} <em>${st.siteSubtitle||"pastane"}</em>`;
+      if (ftAddr && ct.address) ftAddr.textContent = `${ct.address}${ct.city ? " · "+ct.city : ""}`;
+      // Menü items'ı dönüştür
+      ITEMS = (data.menu || []).map((it, idx) => ({
+        cat: it.cat,
+        group: it.group,
+        groupSub: it.groupSub || "",
+        n: String(idx + 1).padStart(2, "0"),
+        name: it.name,
+        desc: it.desc,
+        price: it.price,
+        image: it.image || "",
+        img: it.gradient || "var(--bg-2)",
+      }));
+      // Kategori butonlarını güncelle
+      const cats = data.categories || [];
+      catnav.innerHTML = '<button class="catbtn on" data-cat="all">Hepsi</button>';
+      cats.forEach(c => {
+        const btn = document.createElement("button");
+        btn.className = "catbtn";
+        btn.dataset.cat = c.id;
+        btn.textContent = c.name;
+        catnav.appendChild(btn);
+      });
+      render("all");
+    } catch (e) {
+      console.warn("API yüklenemedi, varsayılan veri kullanılıyor", e);
+      render("all");
+    }
+  }
+
+  function render(filter) {
+    list.innerHTML = "";
+    let lastGroup = null;
+    let i = 0;
+    const items = filter === "all" ? ITEMS : ITEMS.filter(x => x.cat === filter);
+    items.forEach((it) => {
+      if (it.group !== lastGroup) {
+        const head = document.createElement("div");
+        head.className = "group-head reveal";
+        head.innerHTML = `
+          <div class="lab">— ${it.group} —</div>
+          <h2>${it.groupSub || ""}</h2>
+          <span class="sep"></span>
+        `;
+        list.appendChild(head);
+        lastGroup = it.group;
+        i = 0;
+      }
+      const row = document.createElement("article");
+      row.className = "row reveal" + (i % 2 ? " flip" : "");
+      const imgContent = it.image
+        ? `<img src="${it.image}" alt="${it.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover"/>`
+        : "";
+      const imgBg = it.image ? "" : `background:${it.img};`;
+      row.innerHTML = `
+        <div class="img" style="${imgBg}">
+          ${imgContent}
+          <span class="lbl">${it.name}</span>
+        </div>
+        <div class="info">
+          <div class="num">N° ${it.n}</div>
+          <h3>${it.name}</h3>
+          <p>${it.desc}</p>
+          <div class="price">${it.price}</div>
+        </div>
+      `;
+      list.appendChild(row);
+      i++;
+    });
+
+    // observe reveals
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+    list.querySelectorAll(".reveal").forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight) el.classList.add("in");
+      else io.observe(el);
+    });
+  }
+
+  // category filter
+  catnav.addEventListener("click", (e) => {
+    const b = e.target.closest(".catbtn"); if (!b) return;
+    document.querySelectorAll(".catbtn").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    render(b.dataset.cat);
+    window.scrollTo({ top: document.querySelector(".menu").offsetTop - 140, behavior: "smooth" });
+  });
+
+  // Hamburger menu
+  const hamburger = document.getElementById("hamburger");
+  const mobileMenu = document.getElementById("mobileMenu");
+  hamburger.addEventListener("click", () => {
+    const open = hamburger.classList.toggle("open");
+    mobileMenu.classList.toggle("open", open);
+    document.body.style.overflow = open ? "hidden" : "";
+  });
+  mobileMenu.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", () => {
+      hamburger.classList.remove("open");
+      mobileMenu.classList.remove("open");
+      document.body.style.overflow = "";
+    });
+  });
+
+  loadFromAPI();
+
+  // Page transition
+  const ptEl = document.createElement("div");
+  ptEl.className = "page-transition";
+  document.body.appendChild(ptEl);
+  requestAnimationFrame(() => requestAnimationFrame(() => ptEl.classList.add("done")));
+
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[href]");
+    if (!a) return;
+    const href = a.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("javascript")) return;
+    if (a.target === "_blank") return;
+    e.preventDefault();
+    ptEl.classList.remove("done");
+    setTimeout(() => { window.location.href = href; }, 450);
+  });
+
+  // Scroll progress bar
+  const spEl = document.createElement("div");
+  spEl.className = "scroll-progress";
+  document.body.appendChild(spEl);
+  window.addEventListener("scroll", () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const p = h > 0 ? window.scrollY / h : 0;
+    spEl.style.transform = "scaleX(" + p + ")";
+  }, { passive: true });
+</script>
+
+</body>
+</html>

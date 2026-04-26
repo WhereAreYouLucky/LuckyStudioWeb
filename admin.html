@@ -1,0 +1,1483 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Things Pastane — Yönetim Paneli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#111;--bg2:#1a1a1a;--bg3:#222;--bg4:#2a2a2a;
+  --fg:#f0ece4;--fg2:#a8a090;--fg3:#6a6458;
+  --accent:#c8a96a;--accent2:#e0c080;
+  --red:#e05454;--green:#5aaa5a;
+  --radius:12px;--radius-sm:8px;
+  --sans:"DM Sans",system-ui,sans-serif;
+  --mono:"DM Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent);color:#111}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent2)}
+
+/* Layout */
+.shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+@media(max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{position:fixed;inset:0;z-index:100;transform:translateX(-100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);width:280px}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay{display:none;position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.5)}
+  .sidebar-overlay.open{display:block}
+  .mobile-header{display:flex !important}
+}
+
+/* Sidebar */
+.sidebar{background:var(--bg2);border-right:1px solid rgba(255,255,255,.06);padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-brand{padding:0 24px 28px;display:flex;align-items:center;gap:12px;font-size:18px;font-weight:600}
+.sidebar-brand .mark{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#111;display:grid;place-items:center;font-size:18px;font-weight:700}
+.sidebar-brand span{color:var(--fg2);font-weight:400;font-size:14px;margin-left:2px}
+.nav-group{margin-bottom:8px}
+.nav-group-label{padding:8px 24px;font-size:11px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg3)}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 24px;font-size:14px;color:var(--fg2);cursor:pointer;transition:background .15s,color .15s;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.nav-item:hover{background:rgba(255,255,255,.04);color:var(--fg)}
+.nav-item.active{background:rgba(200,169,106,.1);color:var(--accent);font-weight:500}
+.nav-item .icon{width:20px;text-align:center;font-size:16px;flex-shrink:0}
+.sidebar-foot{margin-top:auto;padding:20px 24px;border-top:1px solid rgba(255,255,255,.06)}
+.sidebar-foot a{font-size:13px;color:var(--fg3);display:flex;align-items:center;gap:8px}
+.sidebar-foot a:hover{color:var(--fg)}
+
+/* Mobile header */
+.mobile-header{display:none;align-items:center;gap:12px;padding:14px 20px;
+  background:var(--bg2);border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;z-index:50}
+.mobile-header .mark{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#111;
+  display:grid;place-items:center;font-size:16px;font-weight:700}
+.mobile-header .title{font-size:16px;font-weight:600;flex:1}
+.mobile-header .hamburger{background:none;border:none;width:36px;height:36px;padding:0;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;order:-1}
+.mobile-header .hamburger span{display:block;width:20px;height:2px;background:var(--fg);border-radius:2px}
+
+/* Main */
+.main{padding:32px 40px 60px;max-width:1100px}
+@media(max-width:860px){.main{padding:24px 20px 40px}}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-size:28px;font-weight:700;margin-bottom:6px}
+.page-desc{color:var(--fg2);margin-bottom:32px}
+
+/* Card */
+.card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.card-title{font-size:16px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.card-title .badge{font-size:11px;font-family:var(--mono);background:var(--bg4);padding:4px 10px;border-radius:999px;color:var(--fg2);font-weight:400}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:12px;font-family:var(--mono);letter-spacing:.04em;color:var(--fg2);font-weight:500}
+.form-input,.form-select,.form-textarea{
+  background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);
+  padding:10px 14px;color:var(--fg);font-family:var(--sans);font-size:14px;outline:none;
+  transition:border-color .2s,background .2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);background:var(--bg4)}
+.form-textarea{resize:vertical;min-height:80px}
+.form-select{cursor:pointer}
+.form-hint{font-size:11px;color:var(--fg3);margin-top:2px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 20px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:600;border:none;cursor:pointer;transition:background .2s,transform .15s;font-family:var(--sans)}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--accent);color:#111}
+.btn-primary:hover{background:var(--accent2)}
+.btn-secondary{background:var(--bg4);color:var(--fg);border:1px solid rgba(255,255,255,.1)}
+.btn-secondary:hover{background:var(--bg3)}
+.btn-danger{background:rgba(224,84,84,.15);color:var(--red);border:1px solid rgba(224,84,84,.2)}
+.btn-danger:hover{background:rgba(224,84,84,.25)}
+.btn-sm{height:32px;padding:0 14px;font-size:12px;border-radius:6px}
+.btn-group{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+/* Drag & drop */
+.drag-handle{cursor:grab;color:var(--fg3);font-size:20px;padding:4px 8px;user-select:none;display:flex;align-items:center;transition:color .2s}
+.drag-handle:hover{color:var(--accent)}
+.drag-handle:active{cursor:grabbing}
+[data-list].dragging{opacity:.5;border-color:var(--accent) !important;background:var(--bg4) !important;pointer-events:none}
+[data-list].drag-over-above{box-shadow:0 -3px 0 0 var(--accent)}
+[data-list].drag-over-below{box-shadow:0 3px 0 0 var(--accent)}
+.drag-ghost{position:fixed;pointer-events:none;z-index:10000;opacity:.85;transform:rotate(1deg);box-shadow:0 12px 40px rgba(0,0,0,.5);border:2px solid var(--accent);border-radius:var(--radius)}
+body.is-dragging{user-select:none;cursor:grabbing !important}
+body.is-dragging *{cursor:grabbing !important}
+
+/* Image upload */
+.img-upload{position:relative;width:100%;aspect-ratio:5/4;border-radius:var(--radius-sm);border:2px dashed rgba(255,255,255,.1);
+  background:var(--bg3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  cursor:pointer;transition:border-color .2s,background .2s;overflow:hidden}
+.img-upload:hover{border-color:var(--accent);background:var(--bg4)}
+.img-upload.has-img{border-style:solid;border-color:rgba(255,255,255,.06)}
+.img-upload img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.img-upload .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .2s;gap:8px}
+.img-upload:hover .overlay{opacity:1}
+.img-upload input{display:none}
+.img-upload .placeholder{color:var(--fg3);font-size:13px;text-align:center}
+.img-upload .placeholder .icon{font-size:28px;margin-bottom:4px;display:block}
+
+/* Menu item row */
+.menu-item{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);
+  padding:16px;margin-bottom:12px;display:grid;grid-template-columns:auto 100px 1fr auto;gap:16px;align-items:center;
+  transition:border-color .2s,opacity .2s,box-shadow .2s}
+.menu-item:hover{border-color:rgba(255,255,255,.12)}
+.menu-item .thumb{width:100px;height:80px;border-radius:8px;overflow:hidden;background:var(--bg4);flex-shrink:0;position:relative}
+.menu-item .thumb img{width:100%;height:100%;object-fit:cover}
+.menu-item .thumb .grad{width:100%;height:100%;position:absolute;inset:0}
+.menu-item .info h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.menu-item .info .meta{font-size:12px;color:var(--fg2);display:flex;gap:12px;flex-wrap:wrap}
+.menu-item .info .meta span{display:flex;align-items:center;gap:4px}
+.menu-item .actions{display:flex;gap:8px;flex-shrink:0}
+@media(max-width:640px){.menu-item{grid-template-columns:auto 1fr;gap:12px}.menu-item .thumb{width:100%;height:120px;grid-column:1/-1}.menu-item .info{grid-column:1/-1}.menu-item .actions{grid-column:1/-1}}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--radius);padding:14px 20px;font-size:14px;z-index:9999;
+  transform:translateY(80px);opacity:0;transition:transform .3s,opacity .3s;
+  display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:rgba(90,170,90,.3)}
+.toast.success::before{content:"✓";color:var(--green);font-weight:700}
+.toast.error{border-color:rgba(224,84,84,.3)}
+.toast.error::before{content:"✕";color:var(--red);font-weight:700}
+
+/* Color picker */
+.color-row{display:flex;gap:8px;align-items:center}
+.color-swatch{width:36px;height:36px;border-radius:8px;border:2px solid rgba(255,255,255,.1);cursor:pointer;padding:0;overflow:hidden}
+.color-swatch input{opacity:0;width:100%;height:100%;cursor:pointer}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:16px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;padding:28px}
+.modal-title{font-size:20px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+.modal-close{background:none;border:none;color:var(--fg2);font-size:20px;cursor:pointer;width:32px;height:32px;border-radius:8px;display:grid;place-items:center}
+.modal-close:hover{background:rgba(255,255,255,.06);color:var(--fg)}
+
+/* Stat cards */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+@media(max-width:640px){.stats-row{grid-template-columns:1fr 1fr}}
+.stat-card{display:flex;flex-direction:column;gap:4px}
+
+/* Login */
+.login-overlay{position:fixed;inset:0;z-index:10000;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{width:100%;max-width:380px;text-align:center}
+.login-box .mark{width:64px;height:64px;border-radius:50%;background:var(--accent);color:#111;
+  display:grid;place-items:center;font-size:32px;font-weight:700;margin:0 auto 24px}
+.login-box h2{font-size:24px;font-weight:700;margin-bottom:6px}
+.login-box .sub{color:var(--fg2);font-size:13px;margin-bottom:32px}
+.login-box .form-group{text-align:left;margin-bottom:16px}
+.login-box .btn-primary{width:100%;height:46px;justify-content:center;margin-top:8px;font-size:15px}
+.login-box .error{color:var(--red);font-size:13px;margin-top:14px;min-height:20px}
+.login-box .form-input{height:46px;font-size:15px}
+
+/* Admin mobile extras */
+@media(max-width:640px){
+  .page-title{font-size:22px}
+  .card{padding:18px}
+  .modal{padding:20px;margin:12px}
+  .btn-group{gap:8px}
+  .form-grid{gap:12px}
+  .img-upload{aspect-ratio:1/1}
+}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="mark">T</div>
+    <h2>Things Yönetim</h2>
+    <p class="sub">Devam etmek için giriş yapın</p>
+    <form onsubmit="doLogin(event)">
+      <div class="form-group">
+        <label class="form-label">Kullanıcı Adı</label>
+        <input class="form-input" id="login_user" placeholder="admin" autocomplete="username"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Şifre</label>
+        <input class="form-input" id="login_pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <button type="submit" class="btn btn-primary">Giriş Yap</button>
+    </form>
+    <div class="error" id="login_error"></div>
+    <div style="margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:var(--fg3);letter-spacing:.04em">
+      Powered by <span style="color:var(--accent);font-weight:600">Lucky Studio</span>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark">T</div>
+      <div>Things <span>yönetim</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Genel</div>
+      <button class="nav-item active" data-page="dashboard"><span class="icon">◈</span> Genel Bakış</button>
+      <button class="nav-item" data-page="settings"><span class="icon">⚙</span> Site Ayarları</button>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">İçerik</div>
+      <button class="nav-item" data-page="hero"><span class="icon">★</span> Ana Sayfa (Hero)</button>
+      <button class="nav-item" data-page="vitrin"><span class="icon">▣</span> Vitrin Kartları</button>
+      <button class="nav-item" data-page="hikaye"><span class="icon">♦</span> Hikâyemiz</button>
+      <button class="nav-item" data-page="felsefe"><span class="icon">◇</span> Felsefe</button>
+      <button class="nav-item" data-page="sezon"><span class="icon">❋</span> Mevsim Özel</button>
+      <button class="nav-item" data-page="birgun"><span class="icon">☀</span> Bir Gün</button>
+      <button class="nav-item" data-page="contact"><span class="icon">◉</span> İletişim</button>
+      <button class="nav-item" data-page="social"><span class="icon">◎</span> Sosyal Medya</button>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Menü</div>
+      <button class="nav-item" data-page="categories"><span class="icon">▤</span> Kategoriler</button>
+      <button class="nav-item" data-page="menu"><span class="icon">▦</span> Ürünler</button>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Hesap</div>
+      <button class="nav-item" data-page="password"><span class="icon">🔑</span> Şifre Değiştir</button>
+      <button class="nav-item" onclick="doLogout()" style="color:var(--red)"><span class="icon">⏻</span> Çıkış Yap</button>
+    </div>
+    <div class="sidebar-foot">
+      <a href="/" target="_blank">↗ Siteyi görüntüle</a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div style="display:flex;flex-direction:column;min-height:100vh;flex:1">
+    <div class="mobile-header">
+      <button class="hamburger" id="sidebarToggle" aria-label="Menü"><span></span><span></span><span></span></button>
+      <div class="mark">T</div>
+      <div class="title">Things Yönetim</div>
+    </div>
+    <main class="main" id="main"></main>
+  </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script>
+let DATA = {};
+let AUTH_TOKEN = localStorage.getItem("things_token") || "";
+const $ = (s, p) => (p || document).querySelector(s);
+const $$ = (s, p) => [...(p || document).querySelectorAll(s)];
+
+function authHeaders(extra = {}) {
+  return { "Authorization": "Bearer " + AUTH_TOKEN, ...extra };
+}
+
+// ─── Auth ───
+function showLogin() {
+  $("#loginOverlay").style.display = "flex";
+}
+function hideLogin() {
+  $("#loginOverlay").style.display = "none";
+}
+
+async function checkAuth() {
+  if (!AUTH_TOKEN) { showLogin(); return false; }
+  try {
+    const r = await fetch("/api/check-auth", { headers: authHeaders() });
+    if (!r.ok) { showLogin(); return false; }
+    hideLogin();
+    return true;
+  } catch {
+    showLogin();
+    return false;
+  }
+}
+
+async function doLogin(e) {
+  if (e) e.preventDefault();
+  const user = $("#login_user").value.trim();
+  const pass = $("#login_pass").value;
+  const errEl = $("#login_error");
+  errEl.textContent = "";
+
+  if (!user || !pass) { errEl.textContent = "Kullanıcı adı ve şifre girin"; return; }
+
+  try {
+    const r = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: user, password: pass })
+    });
+    const data = await r.json();
+    if (!r.ok) {
+      errEl.textContent = data.error || "Giriş başarısız";
+      return;
+    }
+    AUTH_TOKEN = data.token;
+    localStorage.setItem("things_token", AUTH_TOKEN);
+    hideLogin();
+    loadData().then(() => renderPage("dashboard"));
+  } catch {
+    errEl.textContent = "Sunucu bağlantı hatası";
+  }
+}
+
+function doLogout() {
+  fetch("/api/logout", { method: "POST", headers: authHeaders() });
+  AUTH_TOKEN = "";
+  localStorage.removeItem("things_token");
+  showLogin();
+  $("#login_user").value = "";
+  $("#login_pass").value = "";
+  $("#login_error").textContent = "";
+}
+
+// ─── Toast ───
+function toast(msg, type = "success") {
+  const el = $("#toast");
+  el.textContent = msg;
+  el.className = "toast " + type;
+  requestAnimationFrame(() => el.classList.add("show"));
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove("show"), 2800);
+}
+
+// ─── API ───
+async function loadData() {
+  const r = await fetch("/api/data", { headers: authHeaders() });
+  if (r.status === 401) { showLogin(); return; }
+  DATA = await r.json();
+}
+const _bc = new BroadcastChannel("things_admin");
+async function saveData() {
+  const r = await fetch("/api/data", {
+    method: "POST",
+    headers: authHeaders({ "Content-Type": "application/json" }),
+    body: JSON.stringify(DATA),
+  });
+  if (r.status === 401) { showLogin(); return; }
+  if (r.ok) {
+    toast("Kaydedildi");
+    _bc.postMessage("reload");
+  } else {
+    toast("Kaydetme hatası", "error");
+  }
+}
+async function uploadImage(file) {
+  const fd = new FormData();
+  fd.append("file", file);
+  const r = await fetch("/api/upload", { method: "POST", body: fd, headers: authHeaders() });
+  if (r.status === 401) { showLogin(); return null; }
+  const j = await r.json();
+  if (!r.ok) { toast(j.error || "Yükleme hatası", "error"); return null; }
+  toast("Resim yüklendi");
+  return j.url;
+}
+
+// ─── Modal ───
+function openModal(html) {
+  $("#modal-content").innerHTML = html;
+  $("#modal").classList.add("open");
+}
+function closeModal() {
+  $("#modal").classList.remove("open");
+}
+$("#modal").addEventListener("click", (e) => {
+  if (e.target === $("#modal")) closeModal();
+});
+
+// ─── Image Upload Helper ───
+function imgUploadHTML(currentUrl, id) {
+  const has = currentUrl ? "has-img" : "";
+  return `
+    <div class="img-upload ${has}" id="${id}" onclick="document.getElementById('${id}_input').click()">
+      ${currentUrl ? `<img src="${currentUrl}"/>` : ""}
+      <div class="overlay">
+        <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();document.getElementById('${id}_input').click()">Değiştir</button>
+        ${currentUrl ? `<button class="btn btn-sm btn-danger" onclick="event.stopPropagation();removeImage('${id}')">Kaldır</button>` : ""}
+      </div>
+      ${!currentUrl ? `<div class="placeholder"><span class="icon">⬆</span>Resim yükle<br><small>JPG, PNG, WebP</small></div>` : ""}
+      <input type="file" id="${id}_input" accept="image/*"/>
+    </div>
+  `;
+}
+
+// ─── Navigation ───
+$$(".nav-item").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    $$(".nav-item").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderPage(btn.dataset.page);
+  });
+});
+
+// ─── Pages ───
+function renderPage(page) {
+  const main = $("#main");
+  const fn = pages[page];
+  if (fn) { main.innerHTML = ""; fn(main); }
+}
+
+const pages = {};
+
+// ── Dashboard ──
+pages.dashboard = (el) => {
+  const menuCount = DATA.menu?.length || 0;
+  const catCount = DATA.categories?.length || 0;
+  el.innerHTML = `
+    <h1 class="page-title">Genel Bakış</h1>
+    <p class="page-desc">Things Pastane yönetim paneline hoş geldiniz.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px">
+      <div class="card" style="text-align:center">
+        <div style="font-size:36px;font-weight:700;color:var(--accent)">${menuCount}</div>
+        <div style="color:var(--fg2);font-size:13px">Menü Ürünü</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:36px;font-weight:700;color:var(--accent)">${catCount}</div>
+        <div style="color:var(--fg2);font-size:13px">Kategori</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:36px;font-weight:700;color:var(--accent)">${DATA.sezon?.items?.length || 0}</div>
+        <div style="color:var(--fg2);font-size:13px">Mevsim Özel</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:36px;font-weight:700;color:var(--accent)">${DATA.birgun?.cards?.length || 0}</div>
+        <div style="color:var(--fg2);font-size:13px">Bir Gün Kartı</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Hızlı İşlemler</div>
+      <div class="btn-group" style="margin-top:0">
+        <button class="btn btn-primary" onclick="navTo('menu')">Menüyü Düzenle</button>
+        <button class="btn btn-secondary" onclick="navTo('settings')">Site Ayarları</button>
+        <a class="btn btn-secondary" href="/" target="_blank">↗ Siteyi Görüntüle</a>
+        <a class="btn btn-secondary" href="/Menu.html" target="_blank">↗ Menü Sayfası</a>
+      </div>
+    </div>
+  `;
+};
+
+// ── Settings ──
+pages.settings = (el) => {
+  const s = DATA.settings || {};
+  el.innerHTML = `
+    <h1 class="page-title">Site Ayarları</h1>
+    <p class="page-desc">Genel site yapılandırması</p>
+    <div class="card">
+      <div class="card-title">Marka</div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Site Adı</label><input class="form-input" id="s_name" value="${s.siteName || ""}"/></div>
+        <div class="form-group"><label class="form-label">Alt Başlık</label><input class="form-input" id="s_sub" value="${s.siteSubtitle || ""}"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Görünüm</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Tema</label>
+          <select class="form-select" id="s_theme">
+            <option value="krem" ${s.theme==="krem"?"selected":""}>Krem (Açık)</option>
+            <option value="kakao" ${s.theme==="kakao"?"selected":""}>Kakao (Koyu)</option>
+            <option value="vanilya" ${s.theme==="vanilya"?"selected":""}>Vanilya</option>
+            <option value="espresso" ${s.theme==="espresso"?"selected":""}>Espresso</option>
+            <option value="fildisi" ${s.theme==="fildisi"?"selected":""}>Fildişi</option>
+            <option value="gece" ${s.theme==="gece"?"selected":""}>Gece Mavisi</option>
+            <option value="tarçın" ${s.theme==="tarçın"?"selected":""}>Tarçın</option>
+            <option value="zeytin" ${s.theme==="zeytin"?"selected":""}>Zeytin Yeşili</option>
+            <option value="lavanta" ${s.theme==="lavanta"?"selected":""}>Lavanta</option>
+            <option value="mermer" ${s.theme==="mermer"?"selected":""}>Mermer Beyaz</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Vurgu Rengi</label>
+          <select class="form-select" id="s_accent">
+            <option value="caramel" ${s.accent==="caramel"?"selected":""}>Karamel</option>
+            <option value="framboise" ${s.accent==="framboise"?"selected":""}>Ahududu</option>
+            <option value="pistache" ${s.accent==="pistache"?"selected":""}>Antep Fıstığı</option>
+            <option value="gold" ${s.accent==="gold"?"selected":""}>Altın</option>
+            <option value="rose" ${s.accent==="rose"?"selected":""}>Gül Kurusu</option>
+            <option value="chocolate" ${s.accent==="chocolate"?"selected":""}>Çikolata</option>
+            <option value="berry" ${s.accent==="berry"?"selected":""}>Böğürtlen</option>
+            <option value="honey" ${s.accent==="honey"?"selected":""}>Bal</option>
+            <option value="sage" ${s.accent==="sage"?"selected":""}>Adaçayı</option>
+            <option value="copper" ${s.accent==="copper"?"selected":""}>Bakır</option>
+            <option value="plum" ${s.accent==="plum"?"selected":""}>Erik</option>
+            <option value="cinnamon" ${s.accent==="cinnamon"?"selected":""}>Tarçın</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipografi</label>
+          <select class="form-select" id="s_font">
+            <option value="editöryel" ${s.fontPair==="editöryel"?"selected":""}>Editöryel</option>
+            <option value="modern" ${s.fontPair==="modern"?"selected":""}>Modern</option>
+            <option value="klasik" ${s.fontPair==="klasik"?"selected":""}>Klasik Serif</option>
+            <option value="zarif" ${s.fontPair==="zarif"?"selected":""}>Zarif</option>
+            <option value="minimal" ${s.fontPair==="minimal"?"selected":""}>Minimal</option>
+            <option value="retro" ${s.fontPair==="retro"?"selected":""}>Retro</option>
+            <option value="el-yazısı" ${s.fontPair==="el-yazısı"?"selected":""}>El Yazısı</option>
+            <option value="art-deco" ${s.fontPair==="art-deco"?"selected":""}>Art Deco</option>
+            <option value="geometric" ${s.fontPair==="geometric"?"selected":""}>Geometrik</option>
+            <option value="rustik" ${s.fontPair==="rustik"?"selected":""}>Rustik</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Çalışma Saatleri</div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Fırın Açılış</label><input class="form-input" type="time" id="s_oven" value="${s.ovenTime || "06:00"}"/></div>
+        <div class="form-group"><label class="form-label">Kapı Açılış</label><input class="form-input" type="time" id="s_open" value="${s.openTime || "08:00"}"/></div>
+        <div class="form-group"><label class="form-label">Kapanış</label><input class="form-input" type="time" id="s_close" value="${s.closeTime || "21:00"}"/></div>
+      </div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveSettings()">Kaydet</button></div>
+  `;
+};
+function saveSettings() {
+  DATA.settings = {
+    ...DATA.settings,
+    siteName: $("#s_name").value,
+    siteSubtitle: $("#s_sub").value,
+    theme: $("#s_theme").value,
+    accent: $("#s_accent").value,
+    fontPair: $("#s_font").value,
+    ovenTime: $("#s_oven").value,
+    openTime: $("#s_open").value,
+    closeTime: $("#s_close").value,
+  };
+  saveData();
+}
+
+// ── Hero ──
+pages.hero = (el) => {
+  const h = DATA.hero || {};
+  const plates = h.plates || [{},{},{},{}];
+  const defaultNames = ["Sol üst tabak", "Sağ üst tabak", "Sol alt tabak", "Sağ alt tabak"];
+  el.innerHTML = `
+    <h1 class="page-title">Ana Sayfa (Hero)</h1>
+    <p class="page-desc">Ana sayfadaki karşılama bölümü</p>
+    <div class="card">
+      <div class="card-title">Başlık</div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Üst Rozet</label><input class="form-input" id="h_badge" value="${h.badge || ""}"/></div>
+        <div class="form-group"><label class="form-label">1. Satır</label><input class="form-input" id="h_line1" value="${h.line1 || ""}"/></div>
+        <div class="form-group"><label class="form-label">2. Satır</label><input class="form-input" id="h_line2" value="${h.line2 || ""}"/></div>
+        <div class="form-group"><label class="form-label">2. Satır (Vurgulu)</label><input class="form-input" id="h_line2em" value="${h.line2em || ""}"/></div>
+        <div class="form-group full"><label class="form-label">Açıklama</label><textarea class="form-textarea" id="h_desc">${h.desc || ""}</textarea></div>
+        <div class="form-group"><label class="form-label">Buton 1</label><input class="form-input" id="h_btn1" value="${h.btn1 || ""}"/></div>
+        <div class="form-group"><label class="form-label">Buton 2</label><input class="form-input" id="h_btn2" value="${h.btn2 || ""}"/></div>
+        <div class="form-group full"><label class="form-label">Kayan Yazı (Tape)</label><input class="form-input" id="h_tape" value="${h.tape || ""}"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Vitrin Görselleri <span class="badge">4 tabak</span></div>
+      <p style="color:var(--fg2);font-size:13px;margin-bottom:16px">Ana sayfadaki yuvarlak tabak görselleri. Resim yüklemezseniz varsayılan çizim kullanılır.</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        ${plates.map((p, i) => `
+          <div>
+            <div class="form-label" style="margin-bottom:8px">${p.name || defaultNames[i]}</div>
+            ${imgUploadHTML(p.image, "hp_" + i)}
+            <input class="form-input hp_name" value="${p.name || ""}" placeholder="Ürün adı" style="margin-top:8px;font-size:12px"/>
+            <input class="form-input hp_tag" value="${p.tag || ""}" placeholder="Etiket (ör: Kruvasan)" style="margin-top:6px;font-size:12px"/>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveHero()">Kaydet</button></div>
+  `;
+  // Bind plate image uploads
+  plates.forEach((p, i) => {
+    const inp = $(`#hp_${i}_input`);
+    if (inp) inp.addEventListener("change", async (e) => {
+      if (!e.target.files[0]) return;
+      const url = await uploadImage(e.target.files[0]);
+      if (url) {
+        if (!DATA.hero.plates) DATA.hero.plates = [{},{},{},{}];
+        DATA.hero.plates[i] = { ...DATA.hero.plates[i], image: url };
+        saveData();
+        renderPage("hero");
+      }
+    });
+  });
+};
+window.removeHeroPlateImage = function(i) {
+  if (DATA.hero && DATA.hero.plates && DATA.hero.plates[i]) {
+    DATA.hero.plates[i].image = "";
+    saveData();
+    renderPage("hero");
+  }
+};
+function saveHero() {
+  const plates = (DATA.hero?.plates || [{},{},{},{}]).map((p, i) => ({
+    ...p,
+    name: $$(".hp_name")[i]?.value || p.name || "",
+    tag: $$(".hp_tag")[i]?.value || "",
+  }));
+  DATA.hero = {
+    ...DATA.hero,
+    badge: $("#h_badge").value, line1: $("#h_line1").value,
+    line2: $("#h_line2").value, line2em: $("#h_line2em").value,
+    desc: $("#h_desc").value, btn1: $("#h_btn1").value,
+    btn2: $("#h_btn2").value, tape: $("#h_tape").value,
+    plates,
+  };
+  saveData();
+}
+
+// ── Vitrin ──
+pages.vitrin = (el) => {
+  const v = DATA.vitrin || {};
+  const menu = DATA.menu || [];
+  const featured = v.featured || [0, 3, 7];
+  const labels = v.labels || [];
+  el.innerHTML = `
+    <h1 class="page-title">Vitrin Kartları</h1>
+    <p class="page-desc">Ana sayfadaki "Bugün vitrinde ne var?" bölümü</p>
+    <div class="card">
+      <div class="card-title">Bölüm Başlığı</div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Etiket</label><input class="form-input" id="v_eye" value="${v.eyebrow || ""}"/></div>
+        <div class="form-group"><label class="form-label">Başlık</label><input class="form-input" id="v_title" value="${v.title || ""}"/></div>
+        <div class="form-group"><label class="form-label">Başlık (Vurgulu)</label><input class="form-input" id="v_em" value="${v.titleEm || ""}"/></div>
+        <div class="form-group full"><label class="form-label">Açıklama</label><textarea class="form-textarea" id="v_desc">${v.desc || ""}</textarea></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Gösterilen Ürünler <span class="badge">3 kart</span></div>
+      <p style="color:var(--fg2);font-size:13px;margin-bottom:16px">Menüden hangi ürünlerin vitrinde gösterileceğini seçin. Her kartın altındaki etiketi de düzenleyebilirsiniz.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        ${[0,1,2].map(i => `
+          <div>
+            <div class="form-label" style="margin-bottom:8px">Kart ${i+1}</div>
+            <select class="form-select vf_select" style="margin-bottom:8px">
+              ${menu.map((m, mi) => `<option value="${mi}" ${featured[i] === mi ? "selected" : ""}>${m.name}</option>`).join("")}
+            </select>
+            <input class="form-input vf_label" value="${labels[i] || ""}" placeholder="Etiket (boş = gizle)"/>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveVitrin()">Kaydet</button></div>
+  `;
+};
+function saveVitrin() {
+  const featured = $$(".vf_select").map(s => parseInt(s.value));
+  const labels = $$(".vf_label").map(l => l.value);
+  DATA.vitrin = {
+    ...DATA.vitrin,
+    eyebrow: $("#v_eye").value,
+    title: $("#v_title").value,
+    titleEm: $("#v_em").value,
+    desc: $("#v_desc").value,
+    featured,
+    labels,
+  };
+  saveData();
+}
+
+// ── Hikaye ──
+pages.hikaye = (el) => {
+  const h = DATA.hikaye || {};
+  const photos = h.photos || [{},{},{}];
+  el.innerHTML = `
+    <h1 class="page-title">Hikâyemiz</h1>
+    <p class="page-desc">Hakkımızda bölümü</p>
+    <div class="card">
+      <div class="card-title">İçerik</div>
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label">Başlık</label><input class="form-input" id="hk_title" value="${h.title || ""}"/><div class="form-hint">Vurgulu kısımları ayrı alanlardan girin</div></div>
+        <div class="form-group"><label class="form-label">Vurgu 1</label><input class="form-input" id="hk_em1" value="${h.titleEm1 || ""}"/></div>
+        <div class="form-group"><label class="form-label">Ara Metin</label><input class="form-input" id="hk_rest" value="${h.titleRest || ""}"/></div>
+        <div class="form-group"><label class="form-label">Vurgu 2</label><input class="form-input" id="hk_em2" value="${h.titleEm2 || ""}"/></div>
+        <div class="form-group full"><label class="form-label">Açıklama</label><textarea class="form-textarea" id="hk_desc">${h.desc || ""}</textarea></div>
+        <div class="form-group full"><label class="form-label">Alıntı</label><textarea class="form-textarea" id="hk_quote">${h.quote || ""}</textarea></div>
+        <div class="form-group"><label class="form-label">Alıntı Sahibi</label><input class="form-input" id="hk_qby" value="${h.quoteBy || ""}"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">İstatistikler</div>
+      <div class="stats-row" id="hk_stats">
+        ${(h.stats||[]).map((s,i) => `
+          <div class="stat-card form-group">
+            <label class="form-label">Değer ${i+1}</label>
+            <input class="form-input stat-val" value="${s.value||""}"/>
+            <input class="form-input stat-lbl" value="${s.label||""}" placeholder="Açıklama" style="margin-top:6px"/>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Fotoğraflar</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        ${photos.map((p,i) => `
+          <div>
+            <div class="form-label" style="margin-bottom:8px">${p.label || "Fotoğraf "+(i+1)}</div>
+            ${imgUploadHTML(p.image, "hk_photo_"+i)}
+            <input class="form-input" id="hk_photo_label_${i}" value="${p.label||""}" placeholder="Etiket" style="margin-top:8px"/>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveHikaye()">Kaydet</button></div>
+  `;
+  // Bind photo uploads
+  photos.forEach((p, i) => {
+    const inp = $(`#hk_photo_${i}_input`);
+    if (inp) inp.addEventListener("change", async (e) => {
+      if (!e.target.files[0]) return;
+      const url = await uploadImage(e.target.files[0]);
+      if (url) { DATA.hikaye.photos[i].image = url; renderPage("hikaye"); }
+    });
+  });
+};
+function saveHikaye() {
+  const stats = [];
+  $$(".stat-val").forEach((el, i) => {
+    stats.push({ value: el.value, label: $$(".stat-lbl")[i].value });
+  });
+  const photos = DATA.hikaye?.photos || [{},{},{}];
+  photos.forEach((p, i) => { p.label = $(`#hk_photo_label_${i}`)?.value || p.label; });
+  DATA.hikaye = {
+    ...DATA.hikaye,
+    title: $("#hk_title").value, titleEm1: $("#hk_em1").value,
+    titleRest: $("#hk_rest").value, titleEm2: $("#hk_em2").value,
+    desc: $("#hk_desc").value, quote: $("#hk_quote").value,
+    quoteBy: $("#hk_qby").value, stats, photos,
+  };
+  saveData();
+}
+
+// ── Felsefe ──
+pages.felsefe = (el) => {
+  const f = DATA.felsefe || {};
+  el.innerHTML = `
+    <h1 class="page-title">Felsefe</h1>
+    <p class="page-desc">Kaydırmalı felsefe bölümü</p>
+    <div class="card">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Etiket</label><input class="form-input" id="f_eye" value="${f.eyebrow || ""}"/></div>
+        <div class="form-group"><label class="form-label">Vurgulu Başlık</label><input class="form-input" id="f_title" value="${f.title || ""}"/></div>
+        <div class="form-group full"><label class="form-label">Devamı</label><input class="form-input" id="f_rest" value="${f.titleRest || ""}"/></div>
+        <div class="form-group full"><label class="form-label">Açıklama</label><textarea class="form-textarea" id="f_desc">${f.desc || ""}</textarea></div>
+      </div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveFelsefe()">Kaydet</button></div>
+  `;
+};
+function saveFelsefe() {
+  DATA.felsefe = { eyebrow: $("#f_eye").value, title: $("#f_title").value, titleRest: $("#f_rest").value, desc: $("#f_desc").value };
+  saveData();
+}
+
+// ── Sezon ──
+pages.sezon = (el) => {
+  const s = DATA.sezon || {};
+  el.innerHTML = `
+    <h1 class="page-title">Mevsim Özel</h1>
+    <p class="page-desc">Haftalık özel tatlılar</p>
+    <div class="card">
+      <div class="card-title">Bölüm Başlığı</div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Başlık</label><input class="form-input" id="sz_title" value="${s.title || ""}"/></div>
+        <div class="form-group"><label class="form-label">Vurgulu</label><input class="form-input" id="sz_em" value="${s.titleEm || ""}"/></div>
+        <div class="form-group full"><label class="form-label">Açıklama</label><textarea class="form-textarea" id="sz_desc">${s.desc || ""}</textarea></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ürünler <button class="btn btn-sm btn-secondary" onclick="addSezonItem()">+ Ekle</button></div>
+      <div id="sz_items">
+        ${(s.items||[]).map((it, i) => sezonItemHTML(it, i)).join("")}
+      </div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveSezon()">Kaydet</button></div>
+  `;
+  bindSezonUploads();
+};
+function sezonItemHTML(it, i) {
+  return `
+    <div class="menu-item" data-idx="${i}" data-list="sezon">
+      <div class="drag-handle">⠿</div>
+      <div class="thumb">
+        ${it.image ? `<img src="${it.image}"/>` : `<div class="grad" style="background:linear-gradient(135deg,${it.color1||"#ccc"},${it.color2||"#999"})"></div>`}
+      </div>
+      <div class="info">
+        <h4>${it.name||""}</h4>
+        <div class="meta"><span>${it.price||""}</span></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-sm btn-secondary" onclick="editSezonItem(${i})">Düzenle</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteSezonItem(${i})">Sil</button>
+      </div>
+    </div>
+  `;
+}
+function editSezonItem(i) {
+  const it = DATA.sezon.items[i] || {};
+  openModal(`
+    <div class="modal-title">Mevsim Ürünü Düzenle <button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Numara</label><input class="form-input" id="szi_num" value="${it.num||""}"/></div>
+      <div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="szi_name" value="${it.name||""}"/></div>
+      <div class="form-group full"><label class="form-label">Açıklama</label><textarea class="form-textarea" id="szi_desc">${it.desc||""}</textarea></div>
+      <div class="form-group"><label class="form-label">Fiyat</label><input class="form-input" id="szi_price" value="${it.price||""}"/></div>
+      <div class="form-group"><label class="form-label">Renk 1</label><input class="form-input" type="color" id="szi_c1" value="${it.color1||"#f7c1c8"}"/></div>
+      <div class="form-group"><label class="form-label">Renk 2</label><input class="form-input" type="color" id="szi_c2" value="${it.color2||"#b54a59"}"/></div>
+      <div class="form-group full"><label class="form-label">Resim</label>${imgUploadHTML(it.image, "szi_img")}</div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveSezonItemModal(${i})">Kaydet</button></div>
+  `);
+  const inp = $("#szi_img_input");
+  if (inp) inp.addEventListener("change", async (e) => {
+    if (!e.target.files[0]) return;
+    const url = await uploadImage(e.target.files[0]);
+    if (url) { DATA.sezon.items[i].image = url; editSezonItem(i); }
+  });
+}
+function saveSezonItemModal(i) {
+  DATA.sezon.items[i] = {
+    ...DATA.sezon.items[i],
+    num: $("#szi_num").value, name: $("#szi_name").value, desc: $("#szi_desc").value,
+    price: $("#szi_price").value, color1: $("#szi_c1").value, color2: $("#szi_c2").value,
+  };
+  closeModal(); saveData(); renderPage("sezon");
+}
+function addSezonItem() {
+  if (!DATA.sezon) DATA.sezon = { items: [] };
+  if (!DATA.sezon.items) DATA.sezon.items = [];
+  DATA.sezon.items.push({ num: "", name: "Yeni Ürün", desc: "", price: "₺ 0", color1: "#ddd", color2: "#999", image: "" });
+  renderPage("sezon");
+}
+function deleteSezonItem(i) {
+  if (!confirm("Bu ürünü silmek istediğinize emin misiniz?")) return;
+  DATA.sezon.items.splice(i, 1); saveData(); renderPage("sezon");
+}
+function saveSezon() {
+  DATA.sezon = { ...DATA.sezon, title: $("#sz_title").value, titleEm: $("#sz_em").value, desc: $("#sz_desc").value };
+  saveData();
+}
+function bindSezonUploads() {}
+
+// ── Bir Gün ──
+pages.birgun = (el) => {
+  const b = DATA.birgun || {};
+  el.innerHTML = `
+    <h1 class="page-title">Bir Gün</h1>
+    <p class="page-desc">Zaman çizelgesi kartları</p>
+    <div class="card">
+      <div class="card-title">Kartlar <button class="btn btn-sm btn-secondary" onclick="addBirgunCard()">+ Ekle</button></div>
+      <div id="bg_cards">
+        ${(b.cards||[]).map((c,i) => `
+          <div class="menu-item" data-idx="${i}" data-list="birgun">
+            <div class="drag-handle">⠿</div>
+            <div class="thumb">
+              ${c.image ? `<img src="${c.image}"/>` : `<div class="grad" style="background:linear-gradient(135deg,${c.color1||"#ccc"},${c.color2||"#999"})"></div>`}
+            </div>
+            <div class="info">
+              <h4>${c.time||""}</h4>
+              <div class="meta"><span>${c.caption||""}</span></div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-sm btn-secondary" onclick="editBirgunCard(${i})">Düzenle</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteBirgunCard(${i})">Sil</button>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveData()">Kaydet</button></div>
+  `;
+};
+function editBirgunCard(i) {
+  const c = DATA.birgun.cards[i] || {};
+  openModal(`
+    <div class="modal-title">Kart Düzenle <button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Saat</label><input class="form-input" id="bg_time" value="${c.time||""}"/></div>
+      <div class="form-group full"><label class="form-label">Açıklama</label><textarea class="form-textarea" id="bg_cap">${c.caption||""}</textarea></div>
+      <div class="form-group"><label class="form-label">Renk 1</label><input class="form-input" type="color" id="bg_c1" value="${c.color1||"#ccc"}"/></div>
+      <div class="form-group"><label class="form-label">Renk 2</label><input class="form-input" type="color" id="bg_c2" value="${c.color2||"#999"}"/></div>
+      <div class="form-group full"><label class="form-label">Resim</label>${imgUploadHTML(c.image, "bg_img")}</div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveBirgunCardModal(${i})">Kaydet</button></div>
+  `);
+  const inp = $("#bg_img_input");
+  if (inp) inp.addEventListener("change", async (e) => {
+    if (!e.target.files[0]) return;
+    const url = await uploadImage(e.target.files[0]);
+    if (url) { DATA.birgun.cards[i].image = url; editBirgunCard(i); }
+  });
+}
+function saveBirgunCardModal(i) {
+  DATA.birgun.cards[i] = {
+    ...DATA.birgun.cards[i],
+    time: $("#bg_time").value, caption: $("#bg_cap").value,
+    color1: $("#bg_c1").value, color2: $("#bg_c2").value,
+  };
+  closeModal(); saveData(); renderPage("birgun");
+}
+function addBirgunCard() {
+  if (!DATA.birgun) DATA.birgun = { cards: [] };
+  DATA.birgun.cards.push({ time: "00:00", caption: "Yeni kart", color1: "#ddd", color2: "#999", image: "" });
+  renderPage("birgun");
+}
+function deleteBirgunCard(i) {
+  if (!confirm("Silmek istediğinize emin misiniz?")) return;
+  DATA.birgun.cards.splice(i, 1); saveData(); renderPage("birgun");
+}
+
+// ── Contact ──
+pages.contact = (el) => {
+  const c = DATA.contact || {};
+  const hrs = c.hours || [];
+  el.innerHTML = `
+    <h1 class="page-title">İletişim</h1>
+    <p class="page-desc">Adres, telefon ve çalışma saatleri</p>
+    <div class="card">
+      <div class="card-title">Bilgiler</div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Adres</label><input class="form-input" id="c_addr" value="${c.address||""}"/></div>
+        <div class="form-group"><label class="form-label">Şehir</label><input class="form-input" id="c_city" value="${c.city||""}"/></div>
+        <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="c_phone" value="${c.phone||""}"/></div>
+        <div class="form-group"><label class="form-label">WhatsApp</label><input class="form-input" id="c_wa" value="${c.whatsapp||""}"/></div>
+        <div class="form-group full"><label class="form-label">E-posta</label><input class="form-input" id="c_email" value="${c.email||""}"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Çalışma Saatleri</div>
+      <div id="c_hours">
+        ${hrs.map((h,i) => `
+          <div style="display:flex;gap:12px;margin-bottom:10px;align-items:center">
+            <input class="form-input c_hday" value="${h.days||""}" style="flex:1" placeholder="Günler"/>
+            <input class="form-input c_htime" value="${h.time||""}" style="flex:1" placeholder="Saatler"/>
+            <button class="btn btn-sm btn-danger" onclick="removeHour(${i})">✕</button>
+          </div>
+        `).join("")}
+      </div>
+      <button class="btn btn-sm btn-secondary" onclick="addHour()" style="margin-top:8px">+ Saat Ekle</button>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveContact()">Kaydet</button></div>
+  `;
+};
+function saveContact() {
+  const hours = [];
+  $$(".c_hday").forEach((el, i) => {
+    hours.push({ days: el.value, time: $$(".c_htime")[i].value });
+  });
+  DATA.contact = {
+    address: $("#c_addr").value, city: $("#c_city").value,
+    phone: $("#c_phone").value, whatsapp: $("#c_wa").value,
+    email: $("#c_email").value, hours,
+  };
+  saveData();
+}
+function addHour() {
+  if (!DATA.contact) DATA.contact = {};
+  if (!DATA.contact.hours) DATA.contact.hours = [];
+  DATA.contact.hours.push({ days: "", time: "" });
+  renderPage("contact");
+}
+function removeHour(i) {
+  DATA.contact.hours.splice(i, 1); renderPage("contact");
+}
+
+// ── Social Media ──
+function detectSocialPlatform(url) {
+  url = (url || "").toLowerCase();
+  const platforms = [
+    { key: "instagram", patterns: ["instagram.com", "instagr.am"], label: "Instagram" },
+    { key: "facebook", patterns: ["facebook.com", "fb.com", "fb.me"], label: "Facebook" },
+    { key: "twitter", patterns: ["twitter.com", "x.com"], label: "X (Twitter)" },
+    { key: "youtube", patterns: ["youtube.com", "youtu.be"], label: "YouTube" },
+    { key: "tiktok", patterns: ["tiktok.com"], label: "TikTok" },
+    { key: "linkedin", patterns: ["linkedin.com"], label: "LinkedIn" },
+    { key: "pinterest", patterns: ["pinterest.com", "pin.it"], label: "Pinterest" },
+    { key: "whatsapp", patterns: ["wa.me", "whatsapp.com", "api.whatsapp.com"], label: "WhatsApp" },
+    { key: "telegram", patterns: ["t.me", "telegram.me", "telegram.org"], label: "Telegram" },
+    { key: "spotify", patterns: ["spotify.com", "open.spotify.com"], label: "Spotify" },
+    { key: "threads", patterns: ["threads.net"], label: "Threads" },
+    { key: "snapchat", patterns: ["snapchat.com"], label: "Snapchat" },
+    { key: "discord", patterns: ["discord.gg", "discord.com"], label: "Discord" },
+    { key: "github", patterns: ["github.com"], label: "GitHub" },
+    { key: "dribbble", patterns: ["dribbble.com"], label: "Dribbble" },
+    { key: "behance", patterns: ["behance.net"], label: "Behance" },
+    { key: "twitch", patterns: ["twitch.tv"], label: "Twitch" },
+    { key: "reddit", patterns: ["reddit.com"], label: "Reddit" },
+  ];
+  for (const p of platforms) {
+    if (p.patterns.some(pat => url.includes(pat))) return p;
+  }
+  return null;
+}
+function socialFaviconURL(url) {
+  try {
+    const host = new URL(url).hostname;
+    return `https://www.google.com/s2/favicons?domain=${host}&sz=64`;
+  } catch { return ""; }
+}
+pages.social = (el) => {
+  const socials = DATA.social || [];
+  el.innerHTML = `
+    <h1 class="page-title">Sosyal Medya</h1>
+    <p class="page-desc">Sosyal medya hesaplarınızı ekleyin. Link yapıştırdığınızda platform ve ikon otomatik algılanır.</p>
+    <div class="card">
+      <div class="card-title">Hesaplar <button class="btn btn-sm btn-secondary" onclick="addSocial()">+ Ekle</button></div>
+      <div id="social_list">
+        ${socials.map((s, i) => {
+          const platform = detectSocialPlatform(s.url);
+          const favicon = socialFaviconURL(s.url);
+          return `
+            <div class="cat-row" data-idx="${i}" data-list="social" style="display:flex;gap:12px;margin-bottom:12px;align-items:center">
+              <div class="drag-handle">⠿</div>
+              <div style="width:32px;height:32px;border-radius:8px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+                ${favicon ? `<img src="${favicon}" style="width:24px;height:24px" onerror="this.style.display='none'"/>` : `<span style="color:var(--fg3);font-size:16px">◎</span>`}
+              </div>
+              <div style="flex-shrink:0;min-width:90px">
+                <div style="font-size:13px;font-weight:600">${s.label || (platform ? platform.label : "Bilinmeyen")}</div>
+                <div style="font-size:11px;color:var(--fg3)">${platform ? platform.label : "—"}</div>
+              </div>
+              <input class="form-input social_url" value="${s.url||""}" placeholder="https://instagram.com/things" style="flex:1" onchange="onSocialURLChange(${i}, this.value)"/>
+              <input class="form-input social_label" value="${s.label||""}" placeholder="Görünen ad (opsiyonel)" style="flex:.6"/>
+              <button class="btn btn-sm btn-danger" onclick="deleteSocial(${i})">✕</button>
+            </div>
+          `;
+        }).join("")}
+      </div>
+      ${socials.length === 0 ? `<p style="color:var(--fg3);font-size:13px;text-align:center;padding:20px 0">Henüz sosyal medya hesabı eklenmedi. Yukarıdaki "+ Ekle" butonuna tıklayın.</p>` : ""}
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveSocial()">Kaydet</button></div>
+  `;
+};
+window.onSocialURLChange = function(i, url) {
+  if (!DATA.social) DATA.social = [];
+  DATA.social[i].url = url;
+  const platform = detectSocialPlatform(url);
+  if (platform && !DATA.social[i].label) {
+    DATA.social[i].label = platform.label;
+  }
+  renderPage("social");
+};
+function saveSocial() {
+  if (!DATA.social) DATA.social = [];
+  const urls = $$(".social_url");
+  const labels = $$(".social_label");
+  DATA.social = DATA.social.map((s, i) => ({
+    ...s,
+    url: urls[i]?.value || s.url || "",
+    label: labels[i]?.value || "",
+  }));
+  saveData();
+}
+function addSocial() {
+  if (!DATA.social) DATA.social = [];
+  DATA.social.push({ url: "", label: "" });
+  renderPage("social");
+}
+function deleteSocial(i) {
+  DATA.social.splice(i, 1);
+  renderPage("social");
+}
+
+// ── Categories ──
+pages.categories = (el) => {
+  const cats = DATA.categories || [];
+  el.innerHTML = `
+    <h1 class="page-title">Kategoriler</h1>
+    <p class="page-desc">Menü kategorilerini yönetin</p>
+    <div class="card">
+      <div class="card-title">Kategoriler <button class="btn btn-sm btn-secondary" onclick="addCategory()">+ Ekle</button></div>
+      <div id="cat_list">
+        ${cats.map((c,i) => `
+          <div class="cat-row" data-idx="${i}" data-list="categories" style="display:flex;gap:12px;margin-bottom:10px;align-items:center">
+            <div class="drag-handle">⠿</div>
+            <input class="form-input cat_id" value="${c.id}" style="flex:.6" placeholder="ID (küçük harf)"/>
+            <input class="form-input cat_name" value="${c.name}" style="flex:1" placeholder="Görünen ad"/>
+            <button class="btn btn-sm btn-danger" onclick="deleteCat(${i})">✕</button>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveCats()">Kaydet</button></div>
+  `;
+};
+function saveCats() {
+  const cats = [];
+  $$(".cat_id").forEach((el, i) => {
+    cats.push({ id: el.value, name: $$(".cat_name")[i].value });
+  });
+  DATA.categories = cats;
+  saveData();
+}
+function addCategory() {
+  if (!DATA.categories) DATA.categories = [];
+  DATA.categories.push({ id: "yeni", name: "Yeni Kategori" });
+  renderPage("categories");
+}
+function deleteCat(i) {
+  DATA.categories.splice(i, 1); renderPage("categories");
+}
+
+// ── Menu Items ──
+let _menuFilter = "all";
+pages.menu = (el) => {
+  const items = DATA.menu || [];
+  const cats = DATA.categories || [];
+  const filter = _menuFilter;
+  const filtered = filter === "all" ? items : items.filter(it => it.cat === filter);
+  el.innerHTML = `
+    <h1 class="page-title">Menü Ürünleri</h1>
+    <p class="page-desc">${filtered.length} / ${items.length} ürün</p>
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="addMenuItem()">+ Yeni Ürün</button>
+      <select class="form-select" id="menu_filter" onchange="_menuFilter=this.value;renderPage('menu')" style="height:40px;padding:0 14px">
+        <option value="all" ${filter==="all"?"selected":""}>Tüm Kategoriler</option>
+        ${cats.map(c => `<option value="${c.id}" ${filter===c.id?"selected":""}>${c.name}</option>`).join("")}
+      </select>
+    </div>
+    <div id="menu_list">
+      ${filtered.map((it) => {
+        const realIdx = items.indexOf(it);
+        return `
+        <div class="menu-item" data-idx="${realIdx}" data-list="menu">
+          <div class="drag-handle">⠿</div>
+          <div class="thumb">
+            ${it.image ? `<img src="${it.image}"/>` : `<div class="grad" style="background:${it.gradient||"var(--bg4)"}"></div>`}
+          </div>
+          <div class="info">
+            <h4>${it.name||""}</h4>
+            <div class="meta">
+              <span>${it.price||""}</span>
+              <span style="color:var(--fg3)">${(cats.find(c=>c.id===it.cat)||{}).name||it.cat||""}</span>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-sm btn-secondary" onclick="editMenuItem(${realIdx})">Düzenle</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteMenuItem(${realIdx})">Sil</button>
+          </div>
+        </div>
+      `;}).join("")}
+    </div>
+  `;
+};
+
+function editMenuItem(i) {
+  const it = DATA.menu[i] || {};
+  const cats = DATA.categories || [];
+  openModal(`
+    <div class="modal-title">${it.name ? "Ürün Düzenle" : "Yeni Ürün"} <button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Ürün Adı</label><input class="form-input" id="mi_name" value="${it.name||""}"/></div>
+      <div class="form-group"><label class="form-label">Fiyat</label><input class="form-input" id="mi_price" value="${it.price||""}"/></div>
+      <div class="form-group">
+        <label class="form-label">Kategori</label>
+        <select class="form-select" id="mi_cat">
+          ${cats.map(c => `<option value="${c.id}" ${it.cat===c.id?"selected":""}>${c.name}</option>`).join("")}
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Grup Adı</label><input class="form-input" id="mi_group" value="${it.group||""}"/></div>
+      <div class="form-group full"><label class="form-label">Grup Alt Başlık (opsiyonel)</label><input class="form-input" id="mi_gsub" value="${it.groupSub||""}"/></div>
+      <div class="form-group full"><label class="form-label">Açıklama</label><textarea class="form-textarea" id="mi_desc">${it.desc||""}</textarea></div>
+      <div class="form-group full">
+        <label class="form-label">Ürün Görseli</label>
+        ${imgUploadHTML(it.image, "mi_img")}
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Yedek Gradient (resim yoksa)</label>
+        <input class="form-input" id="mi_grad" value="${it.gradient||""}" placeholder="radial-gradient(circle at 50% 50%, #f7c8c0, #b54a59)"/>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="saveMenuItemModal(${i})">Kaydet</button>
+      <button class="btn btn-secondary" onclick="closeModal()">İptal</button>
+    </div>
+  `);
+  const inp = $("#mi_img_input");
+  if (inp) inp.addEventListener("change", async (e) => {
+    if (!e.target.files[0]) return;
+    const url = await uploadImage(e.target.files[0]);
+    if (url) { DATA.menu[i].image = url; editMenuItem(i); }
+  });
+}
+
+function saveMenuItemModal(i) {
+  const cat = $("#mi_cat").value;
+  const groupName = $("#mi_group").value || (DATA.categories.find(c=>c.id===cat)||{}).name || "";
+  DATA.menu[i] = {
+    ...DATA.menu[i],
+    id: DATA.menu[i]?.id || Date.now(),
+    cat, group: groupName, groupSub: $("#mi_gsub").value,
+    name: $("#mi_name").value, desc: $("#mi_desc").value,
+    price: $("#mi_price").value, gradient: $("#mi_grad").value,
+  };
+  closeModal(); saveData(); renderPage("menu");
+}
+
+function addMenuItem() {
+  if (!DATA.menu) DATA.menu = [];
+  const cats = DATA.categories || [];
+  const newItem = {
+    id: Date.now(), cat: cats[0]?.id || "", group: cats[0]?.name || "",
+    groupSub: "", name: "", desc: "", price: "₺ 0", image: "",
+    gradient: "radial-gradient(circle at 50% 50%, #ddd, #999)",
+  };
+  DATA.menu.push(newItem);
+  editMenuItem(DATA.menu.length - 1);
+}
+
+function deleteMenuItem(i) {
+  if (!confirm(`"${DATA.menu[i]?.name}" ürününü silmek istediğinize emin misiniz?`)) return;
+  DATA.menu.splice(i, 1); saveData(); renderPage("menu");
+}
+
+// ── Şifre Değiştir ──
+pages.password = (el) => {
+  el.innerHTML = `
+    <h1 class="page-title">Şifre Değiştir</h1>
+    <p class="page-desc">Admin şifrenizi güncelleyin</p>
+    <div class="card">
+      <div class="card-title">Yeni Şifre Belirle</div>
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label">Mevcut Şifre</label><input class="form-input" type="password" id="pw_old" autocomplete="current-password"/></div>
+        <div class="form-group"><label class="form-label">Yeni Şifre</label><input class="form-input" type="password" id="pw_new" autocomplete="new-password"/><div class="form-hint">En az 6 karakter</div></div>
+        <div class="form-group"><label class="form-label">Yeni Şifre (Tekrar)</label><input class="form-input" type="password" id="pw_confirm" autocomplete="new-password"/></div>
+      </div>
+    </div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="changePassword()">Şifreyi Güncelle</button></div>
+  `;
+};
+
+async function changePassword() {
+  const oldPw = $("#pw_old").value;
+  const newPw = $("#pw_new").value;
+  const confirmPw = $("#pw_confirm").value;
+
+  if (!oldPw) { toast("Mevcut şifrenizi girin", "error"); return; }
+  if (!newPw) { toast("Yeni şifre girin", "error"); return; }
+  if (newPw.length < 6) { toast("Şifre en az 6 karakter olmalı", "error"); return; }
+  if (newPw !== confirmPw) { toast("Şifreler eşleşmiyor", "error"); return; }
+
+  try {
+    const r = await fetch("/api/change-password", {
+      method: "POST",
+      headers: authHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ oldPassword: oldPw, newPassword: newPw })
+    });
+    const data = await r.json();
+    if (r.ok) {
+      AUTH_TOKEN = data.token;
+      localStorage.setItem("things_token", AUTH_TOKEN);
+      toast("Şifre başarıyla güncellendi");
+      renderPage("password");
+    } else {
+      toast(data.error || "Şifre değiştirilemedi", "error");
+    }
+  } catch {
+    toast("Sunucu hatası", "error");
+  }
+}
+
+// ─── Image remove helper ───
+window.removeImage = function(id) {
+  // Hero plates
+  const hpMatch = id.match(/^hp_(\d+)$/);
+  if (hpMatch) { removeHeroPlateImage(parseInt(hpMatch[1])); return; }
+  // Hikaye photos
+  const hkMatch = id.match(/^hk_photo_(\d+)$/);
+  if (hkMatch) {
+    const i = parseInt(hkMatch[1]);
+    if (DATA.hikaye && DATA.hikaye.photos && DATA.hikaye.photos[i]) {
+      DATA.hikaye.photos[i].image = "";
+      saveData();
+      renderPage("hikaye");
+    }
+    return;
+  }
+  // Sezon items
+  const szMatch = id.match(/^szi_img$/);
+  if (szMatch) { toast("Modal'ı kapatıp tekrar açın", "error"); return; }
+  // Menu items
+  const miMatch = id.match(/^mi_img$/);
+  if (miMatch) { toast("Modal'ı kapatıp tekrar açın", "error"); return; }
+  toast("Resim kaldırıldı");
+};
+
+// ─── Drag & Drop reorder (mouse-based) ───
+(function() {
+  let srcRow = null, srcIdx = null, listName = null;
+  let ghost = null, placeholder = null;
+  let siblings = [], startY = 0;
+
+  function getArr(list) {
+    if (list === "birgun") return DATA.birgun?.cards;
+    if (list === "sezon") return DATA.sezon?.items;
+    if (list === "categories") return DATA.categories;
+    if (list === "menu") return DATA.menu;
+    if (list === "social") return DATA.social;
+    return null;
+  }
+
+  document.addEventListener("mousedown", (e) => {
+    const handle = e.target.closest(".drag-handle");
+    if (!handle) return;
+    const row = handle.closest("[data-list]");
+    if (!row) return;
+    e.preventDefault();
+
+    srcRow = row;
+    srcIdx = parseInt(row.dataset.idx);
+    listName = row.dataset.list;
+    startY = e.clientY;
+
+    // Collect siblings
+    const parent = row.parentNode;
+    siblings = Array.from(parent.querySelectorAll(`[data-list="${listName}"]`));
+
+    // Create ghost
+    ghost = row.cloneNode(true);
+    ghost.className = (row.className.replace(/drag-over-\w+/g, "").trim()) + " drag-ghost";
+    ghost.style.width = row.offsetWidth + "px";
+    ghost.style.left = row.getBoundingClientRect().left + "px";
+    ghost.style.top = row.getBoundingClientRect().top + "px";
+    document.body.appendChild(ghost);
+
+    // Mark source
+    row.classList.add("dragging");
+    document.body.classList.add("is-dragging");
+
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  });
+
+  function onMove(e) {
+    if (!ghost) return;
+    const dy = e.clientY - startY;
+    const srcRect = srcRow.getBoundingClientRect();
+    ghost.style.top = (srcRect.top + dy) + "px";
+
+    // Clear old indicators
+    siblings.forEach(s => s.classList.remove("drag-over-above", "drag-over-below"));
+
+    // Find which sibling we're over
+    for (const sib of siblings) {
+      if (sib === srcRow) continue;
+      const rect = sib.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      if (e.clientY > rect.top && e.clientY < rect.bottom) {
+        if (e.clientY < midY) {
+          sib.classList.add("drag-over-above");
+        } else {
+          sib.classList.add("drag-over-below");
+        }
+        break;
+      }
+    }
+  }
+
+  function onUp(e) {
+    document.removeEventListener("mousemove", onMove);
+    document.removeEventListener("mouseup", onUp);
+    if (!ghost) return;
+
+    // Find drop target
+    let dropIdx = srcIdx;
+    for (const sib of siblings) {
+      if (sib === srcRow) continue;
+      const rect = sib.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      if (e.clientY > rect.top && e.clientY < rect.bottom) {
+        const sibIdx = parseInt(sib.dataset.idx);
+        dropIdx = e.clientY < midY ? sibIdx : sibIdx + (sibIdx > srcIdx ? 0 : 1);
+        if (dropIdx > srcIdx) dropIdx--;
+        break;
+      }
+    }
+
+    // Cleanup
+    ghost.remove();
+    ghost = null;
+    srcRow.classList.remove("dragging");
+    siblings.forEach(s => s.classList.remove("drag-over-above", "drag-over-below"));
+    document.body.classList.remove("is-dragging");
+
+    if (dropIdx === srcIdx) { srcRow = null; return; }
+
+    // For lists with input fields, save current values first
+    if (listName === "social") {
+      const urls = document.querySelectorAll(".social_url");
+      const labels = document.querySelectorAll(".social_label");
+      DATA.social = DATA.social.map((s, i) => ({
+        ...s,
+        url: urls[i]?.value || s.url || "",
+        label: labels[i]?.value || "",
+      }));
+    }
+    if (listName === "categories") {
+      const cats = [];
+      document.querySelectorAll(".cat_id").forEach((el, i) => {
+        cats.push({ id: el.value, name: document.querySelectorAll(".cat_name")[i].value });
+      });
+      DATA.categories = cats;
+    }
+
+    const arr = getArr(listName);
+    if (!arr) return;
+    const item = arr.splice(srcIdx, 1)[0];
+    arr.splice(dropIdx, 0, item);
+    saveData();
+    renderPage(listName);
+    srcRow = null;
+  }
+})();
+
+// ─── Nav helper ───
+window.navTo = function(page) {
+  $$(".nav-item").forEach(b => {
+    b.classList.toggle("active", b.dataset.page === page);
+  });
+  renderPage(page);
+};
+
+// ─── Mobile sidebar toggle ───
+const sidebarToggle = document.getElementById("sidebarToggle");
+const sidebarEl = document.querySelector(".sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+function openSidebar() {
+  sidebarEl.classList.add("open");
+  sidebarOverlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeSidebar() {
+  sidebarEl.classList.remove("open");
+  sidebarOverlay.classList.remove("open");
+  document.body.style.overflow = "";
+}
+if (sidebarToggle) sidebarToggle.addEventListener("click", openSidebar);
+if (sidebarOverlay) sidebarOverlay.addEventListener("click", closeSidebar);
+
+// Close sidebar when navigating on mobile
+$$(".nav-item").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    if (window.innerWidth <= 860) closeSidebar();
+  });
+});
+
+// ─── Init ───
+checkAuth().then((ok) => {
+  if (ok) loadData().then(() => renderPage("dashboard"));
+});
+</script>
+</body>
+</html>
