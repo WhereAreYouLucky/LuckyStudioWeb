@@ -392,10 +392,3 @@
     }
   ]
 }
-{
-  "homepage": "https://whereareyoulucky.github.io/LuckyStudioWeb",
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
-  }
-}
